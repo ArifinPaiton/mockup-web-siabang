@@ -9,161 +9,178 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
         
+        :root {
+            --primary-blue: #3B82F6;
+            --secondary-blue: #60A5FA;
+            --light-blue: #DBEAFE;
+            --dark-blue: #1E40AF;
+            --soft-gray: #F8FAFC;
+            --text-dark: #374151;
+            --text-light: #6B7280;
+        }
+        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--light-blue) 0%, #FFFFFF 100%);
             min-height: 100vh;
+            color: var(--text-dark);
         }
         
         .card-gradient-1 {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
         }
         
         .card-gradient-2 {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
         }
         
         .card-gradient-3 {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
         }
         
         .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
             transition: all 0.3s ease;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
+            color: white;
             transition: all 0.3s ease;
         }
         
         .btn-secondary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.3);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
         }
         
         .stat-card {
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 极, 0, 0.12);
         }
         
         .search-input {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid transparent;
+            background: white;
+            border: 2px solid #E5E7EB;
             transition: all 0.3s ease;
         }
         
         .search-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
-        .refresh-animation {
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @media (max-width: 768px) {
+            .responsive-padding {
+                padding: 1rem;
+            }
+            .text-responsive {
+                font-size: 0.9rem;
+            }
+            .stat-card {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-4xl mx-auto">
-        <!-- Header dengan Glass Effect -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-white">Dashboard Wilayah</h1>
-                    <p class="text-blue-100 mt-1">Sistem Manajemen Pengiriman Barang</p>
+    <div class="w-full max-w-4xl mx-auto responsive-padding">
+        <!-- Header -->
+        <div class="glass-effect rounded-2xl p-6 mb-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <h1 class="text-2xl font-bold text-gray-800">Dashboard Wilayah</h1>
+                    <p class="text-gray-600 mt-1">Sistem Manajemen Pengiriman Barang</p>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                        <i class="fas fa-user-circle text-2xl text-purple-600"></i>
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user-circle text-xl text-blue-600"></i>
                     </div>
-                    <div>
-                        <p class="text-white font-semibold">Ahmad Rizky</p>
-                        <p class="text-blue-100 text-sm">Petugas Wilayah</p>
+                    <div class="hidden sm:block">
+                        <p class="text-gray-800 font-semibold">Ahmad Rizky</p>
+                        <p class="text-gray-600 text-sm">Petugas Wilayah</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Sambutan dan Statistik -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+        <div class="glass-effect rounded-2xl p-6 mb-6">
             <div class="text-center mb-6">
-                <h2 class="text-xl font-semibold text-white">Selamat Datang, <span class="text-yellow-300">Ahmad Rizky</span></h2>
-                <p class="text-blue-100 mt-2">Selasa, 12 Desember 2023</p>
+                <h2 class="text-xl font-semibold text-gray-800">Selamat Datang, <span class="text-blue-600">Ahmad Rizky</span></h2>
+                <p class="text-gray-600 mt-2">Selasa, 12 Desember 2023</p>
             </div>
 
             <!-- Stat Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div class="stat-card card-gradient-1 rounded-2xl p-6 text-white text-center">
-                    <div class="w-16 h-16 mx-auto bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-check-circle text-2xl"></i>
+                <div class="stat-card card-gradient-1 rounded-2xl p-6 text-center">
+                    <div class="w-14 h-14 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
+                        <i class="fas fa-check-circle text-xl text-blue-600"></i>
                     </div>
-                    <h3 class="font-semibold text-lg mb-1">Tiba di Wilayah</h3>
-                    <p class="text-3xl font-bold">42</p>
-                    <p class="text-sm opacity-80 mt-1">Barang telah tiba</p>
+                    <h3 class="font-semibold text-gray-800 text-lg mb-1">Tiba di Wilayah</h3>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800">42</p>
+                    <p class="text-sm text-gray-600 mt-1">Barang telah tiba</p>
                 </div>
 
-                <div class="stat-card card-gradient-2 rounded-2xl p-6 text-white text-center">
-                    <div class="w-16 h-16 mx-auto bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-tasks text-2xl"></i>
+                <div class="stat-card card-gradient-2 rounded-2xl p-6 text-center">
+                    <div class="w-14 h-14 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
+                        <i class="fas fa-tasks text-xl text-amber-600"></i>
                     </div>
-                    <h3 class="font-semibold text-lg mb-1">Selesai Hari Ini</h3>
-                    <p class="text-3xl font-bold">28</p>
-                    <p class="text-sm opacity-80 mt-1">Barang terselesaikan</p>
+                    <h3 class="font-semibold text-gray-800 text-lg mb-1">Selesai Hari Ini</h3>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800">28</p>
+                    <p class="text-sm text-gray-600 mt-1">Barang terselesaikan</p>
                 </div>
             </div>
 
             <!-- Progress Ringkasan -->
-            <div class="bg-white bg-opacity-90 rounded-2xl p-4">
+            <div class="bg-gray-50 rounded-2xl p-4">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-sm font-medium text-gray-700">Progress Pengiriman Hari Ini</span>
-                    <span class="text-sm font-bold text-purple-600">67%</span>
+                    <span class="text-sm font-bold text-blue-600">67%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-gradient-to-r from-purple-400 to-pink-400 h-2 rounded-full" style="width: 67%"></div>
+                    <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full" style="width: 67%"></div>
                 </div>
             </div>
         </div>
 
         <!-- Pencarian Manual -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+        <div class="glass-effect rounded-2xl p-6 mb-6">
             <div class="flex items-center mb-4">
-                <i class="fas fa-qrcode text-white text-xl mr-3"></i>
-                <h2 class="text-xl font-semibold text-white">Pencarian Manual</h2>
+                <i class="fas fa-qrcode text-gray-700 text-xl mr-3"></i>
+                <h2 class="text-xl font-semibold text-gray-800">Pencarian Manual</h2>
             </div>
-            <p class="text-blue-100 mb-4">Gunakan fitur ini jika QR code barang rusak atau tidak terbaca</p>
+            <p class="text-gray-600 mb-4">Gunakan fitur ini jika QR code barang rusak atau tidak terbaca</p>
             
-            <div class="bg-white rounded-xl p-4">
+            <div class="bg-gray-50 rounded-xl p-4">
                 <div class="relative">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                     <input 
                         type="text" 
                         placeholder="Masukkan No. Resi Barang..." 
-                        class="search-input w-full pl-10 pr-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-purple-300"
+                        class="search-input w-full pl-10 pr-4 py-3 rounded-lg"
                     >
                 </div>
                 
-                <button class="btn-primary w-full mt-4 py-3 rounded-lg text-white font-semibold flex items-center justify-center">
+                <button class="btn-primary w-full mt-4 py-3 rounded-lg font-semibold flex items-center justify-center">
                     <i class="fas fa-check-circle mr-2"></i>
                     Tandai Barang Tiba
                 </button>
@@ -171,38 +188,38 @@
         </div>
 
         <!-- Menu Aksi Utama -->
-        <div class="glass-effect rounded-2xl p-6 shadow-xl">
-            <h2 class="text-xl font-semibold text-white mb-6 text-center">Menu Utama</h2>
+        <div class="glass-effect rounded-2xl p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center">Menu Utama</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <a href="terima-kedatangan.html" class="btn-primary rounded-xl p-4 text-white text-center transition-all duration-300 hover:scale-105 block">
-                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-box-open text-2xl"></i>
+                <a href="terima-kedatangan.html" class="btn-primary rounded-xl p-4 text-center transition-all duration-300 hover:scale-105 block">
+                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-30 rounded-full flex items-center justify-center mb-3">
+                        <i class="fas fa-box-open text-xl"></i>
                     </div>
                     <h3 class="font-semibold mb-1">Terima Kedatangan Barang</h3>
-                    <p class="text-sm opacity-90">Scan QR code barang yang datang</p>
+                    <p class="text-sm text-blue-100">Scan QR code barang yang datang</p>
                 </a>
 
-                <a href="cari-serahkan.html" class="btn-secondary rounded-xl p-4 text-white text-center transition-all duration-300 hover:scale-105 block">
-                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-truck-loading text-2xl"></i>
+                <a href="cari-serahkan.html" class="btn-secondary rounded-xl p-4 text-center transition-all duration-300 hover:scale-105 block">
+                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-30 rounded-full flex items-center justify-center mb-3">
+                        <i class="fas fa-truck-loading text-xl"></i>
                     </div>
                     <h3 class="font-semibold mb-1">Cari & Serahkan Barang</h3>
-                    <p class="text-sm opacity-90">Proses penyerahan ke penerima</p>
+                    <p class="text-sm text-purple-100">Proses penyerahan ke penerima</p>
                 </a>
             </div>
 
             <!-- Fitur Tambahan -->
             <div class="grid grid-cols-3 gap-3 mt-6">
-                <button class="glass-effect rounded-xl p-3 text-white text-center transition-all duration-300 hover:bg-white hover:bg-opacity-20">
+                <button class="glass-effect rounded-xl p-3 text-gray-700 text-center transition-all duration-300 hover:bg-blue-50">
                     <i class="fas fa-history text-lg mb-1"></i>
                     <p class="text-xs">Riwayat</p>
                 </button>
-                <button class="glass-effect rounded-xl p-3 text-white text-center transition-all duration-300 hover:bg-white hover:bg-opacity-20">
+                <button class="glass-effect rounded-xl p-3 text-gray-700 text-center transition-all duration-300 hover:bg-blue-50">
                     <i class="fas fa-chart-line text-lg mb-1"></i>
                     <p class="text-xs">Laporan</p>
                 </button>
-                <button class="glass-effect rounded-xl p-3 text-white text-center transition-all duration-300 hover:bg-white hover:bg-opacity-20">
+                <button class="glass-effect rounded-xl p-3 text-gray-700 text-center transition-all duration-300 hover:bg-blue-50">
                     <i class="fas fa-cog text-lg mb-1"></i>
                     <p class="text-xs">Pengaturan</p>
                 </button>
@@ -211,25 +228,13 @@
 
         <!-- Footer -->
         <div class="text-center mt-8">
-            <p class="text-blue-100 text-sm">© 2023 Antar Barang - Sistem Manajemen Logistik</p>
-            <p class="text-blue-100 text-xs mt-1">Versi 2.1.0 • Terakhir update: 12 Des 2023</p>
+            <p class="text-gray-600 text-sm">© 2023 Antar Barang - Sistem Manajemen Logistik</p>
+            <p class="text-gray-500 text-xs mt-1">Versi 2.1.0 • Terakhir update: 12 Des 2023</p>
         </div>
     </div>
 
     <script>
-        // Animasi untuk efek refresh
-        function refreshData() {
-            const refreshBtn = document.querySelector('.refresh-btn');
-            refreshBtn.classList.add('refresh-animation');
-            
-            setTimeout(() => {
-                refreshBtn.classList.remove('refresh-animation');
-                showNotification('Data berhasil diperbarui!', 'success');
-            }, 1000);
-        }
-
         function showNotification(message, type) {
-            // Buat notifikasi sederhana
             const notification = document.createElement('div');
             notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white font-semibold ${
                 type === 'success' ? 'bg-green-500' : 'bg-red-500'
@@ -243,14 +248,7 @@
             }, 3000);
         }
 
-        // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Refresh button
-            const refreshBtn = document.querySelector('.refresh-btn');
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', refreshData);
-            }
-            
             // Tandai barang tiba
             const tandaiBtn = document.querySelector('.btn-primary');
             if (tandaiBtn) {
