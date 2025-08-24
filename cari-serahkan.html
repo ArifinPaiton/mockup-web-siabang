@@ -51,16 +51,6 @@
             box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
         }
         
-        .item-card {
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .item-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-        }
-        
         .search-input {
             background: rgba(255, 255, 255, 0.9);
             border: 2px solid transparent;
@@ -76,6 +66,16 @@
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
             border-radius: 9999px;
+        }
+        
+        .owner-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .owner-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
@@ -131,7 +131,7 @@
         <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl" id="searchResults" style="display: none;">
             <h2 class="text-xl font-semibold text-white mb-4">Hasil Pencarian</h2>
             
-            <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+            <div class="bg-white bg-opacity-90 rounded-xl p-4">
                 <div class="flex items-center justify-between mb-3">
                     <div>
                         <h3 class="font-semibold text-gray-800 text-lg">RESI00123456</h3>
@@ -171,31 +171,94 @@
             </div>
         </div>
 
-        <!-- Daftar Barang Siap Serah -->
+        <!-- Barang Siap Diserahkan -->
         <div class="glass-effect rounded-2xl p-6 shadow-xl">
-            <h2 class="text-xl font-semibold text-white mb-4">Barang Siap Diserahkan</h2>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-white">Barang Siap Diserahkan</h2>
+                <span class="status-badge bg-green-100 text-green-800">3 Pemilik</span>
+            </div>
+            
+            <p class="text-blue-100 mb-4">Daftar pemilik barang yang siap untuk diserahkan</p>
             
             <div class="space-y-3">
-                <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+                <!-- Pemilik 1 -->
+                <div class="owner-card bg-white bg-opacity-90 rounded-xl p-4">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="font-semibold text-gray-800">RESI00123457</h3>
-                            <p class="text-sm text-gray-600">Surabaya - Malang</p>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">Ahmad Fauzi</h3>
+                                <p class="text-sm text-gray-600">081277788899</p>
+                            </div>
                         </div>
-                        <span class="status-badge bg-green-100 text-green-800">Siap Serah</span>
+                        <div class="text-right">
+                            <span class="status-badge bg-green-100 text-green-800">2 Barang</span>
+                            <p class="text-xs text-gray-500 mt-1">RESI00123457</p>
+                        </div>
                     </div>
-                    <p class="text-sm text-gray-500">Ahmad Fauzi • 081277788899</p>
+                    <button class="btn-success w-full mt-3 py-2 rounded-lg text-white font-semibold" onclick="goToConfirmation(1)">
+                        <i class="fas fa-clipboard-check mr-2"></i>
+                        Proses Penyerahan
+                    </button>
                 </div>
 
-                <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+                <!-- Pemilik 2 -->
+                <div class="owner-card bg-white bg-opacity-90 rounded-xl p-4">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="font-semibold text-gray-800">RESI00123458</h3>
-                            <p class="text-sm text-gray-600">Yogyakarta - Solo</p>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-pink-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">Dewi Lestari</h3>
+                                <p class="text-sm text-gray-600">081255566677</p>
+                            </div>
                         </div>
-                        <span class="status-badge bg-green-100 text-green-800">Siap Serah</span>
+                        <div class="text-right">
+                            <span class="status-badge bg-green-100 text-green-800">2 Barang</span>
+                            <p class="text-xs text-gray-500 mt-1">RESI00123458</p>
+                        </div>
                     </div>
-                    <p class="text-sm text-gray-500">Dewi Lestari • 081255566677</p>
+                    <button class="btn-success w-full mt-3 py-2 rounded-lg text-white font-semibold" onclick="goToConfirmation(2)">
+                        <i class="fas fa-clipboard-check mr-2"></i>
+                        Proses Penyerahan
+                    </button>
+                </div>
+
+                <!-- Pemilik 3 -->
+                <div class="owner-card bg-white bg-opacity-90 rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">Budi Santoso</h3>
+                                <p class="text-sm text-gray-600">081233344455</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="status-badge bg-green-100 text-green-800">1 Barang</span>
+                            <p class="text-xs text-gray-500 mt-1">RESI00123459</p>
+                        </div>
+                    </div>
+                    <button class="btn-success w-full mt-3 py-2 rounded-lg text-white font-semibold" onclick="goToConfirmation(3)">
+                        <i class="fas fa-clipboard-check mr-2"></i>
+                        Proses Penyerahan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Informasi Ringkas -->
+            <div class="bg-blue-100 bg-opacity-20 rounded-lg p-3 mt-4">
+                <div class="flex items-center">
+                    <i class="fas fa-info-circle text-blue-300 mr-2"></i>
+                    <p class="text-blue-100 text-sm">
+                        Total: <span class="font-semibold">3 pemilik</span> • 
+                        <span class="font-semibold">5 barang</span> siap diserahkan
+                    </p>
                 </div>
             </div>
         </div>
@@ -240,6 +303,16 @@
 
         function showDetails() {
             showNotification('Menampilkan detail barang...', 'success');
+        }
+
+        function goToConfirmation(ownerId) {
+            // Simulasi redirect ke halaman konfirmasi
+            showNotification(`Membuka halaman konfirmasi untuk pemilik ${ownerId}...`, 'success');
+            
+            // Dalam implementasi real, akan redirect ke halaman konfirmasi-penyerahan.html
+            setTimeout(() => {
+                window.location.href = `konfirmasi-penyerahan.html?owner=${ownerId}`;
+            }, 1000);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
