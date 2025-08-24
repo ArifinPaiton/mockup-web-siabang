@@ -9,42 +9,57 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
         
+        :root {
+            --primary-blue: #3B82F6;
+            --secondary-blue: #60A5FA;
+            --light-blue: #DBEAFE;
+            --dark-blue: #1E40AF;
+            --soft-gray: #F8FAFC;
+            --text-dark: #374151;
+            --text-light: #6B7280;
+        }
+        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--light-blue) 0%, #FFFFFF 100%);
             min-height: 100vh;
+            color: var(--text-dark);
         }
         
         .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
             transition: all 0.3s ease;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
+            color: white;
             transition: all 0.3s ease;
         }
         
         .btn-secondary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.3);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
         }
         
         .scanner-container {
             position: relative;
             overflow: hidden;
             border-radius: 16px;
+            background: #F3F4F6;
         }
         
         .scanner-overlay {
@@ -53,7 +68,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(transparent 50%, rgba(0, 255, 0, 0.1) 50%);
+            background: linear-gradient(transparent 50%, rgba(59, 130, 246, 0.1) 50%);
             background-size: 100% 4px;
             animation: scan 2s linear infinite;
         }
@@ -65,26 +80,49 @@
         
         .item-card {
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
         
         .item-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .search-input {
+            background: white;
+            border: 2px solid #E5E7EB;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .responsive-padding {
+                padding: 1rem;
+            }
+            .text-responsive {
+                font-size: 0.9rem;
+            }
+            .scanner-container {
+                height: 200px;
+            }
         }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-4xl mx-auto">
+    <div class="w-full max-w-4xl mx-auto responsive-padding">
         <!-- Header -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-white">Terima Kedatangan Barang</h1>
-                    <p class="text-blue-100 mt-1">Scan QR code barang yang baru tiba</p>
+        <div class="glass-effect rounded-2xl p-6 mb-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <h1 class="text-2xl font-bold text-gray-800">Terima Kedatangan Barang</h1>
+                    <p class="text-gray-600 mt-1">Scan QR code barang yang baru tiba</p>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <a href="dashboard-wilayah.html" class="btn-secondary px-4 py-2 rounded-lg text-white font-semibold">
+                    <a href="dashboard-wilayah.html" class="btn-secondary px-4 py-2 rounded-lg font-semibold flex items-center">
                         <i class="fas fa-arrow-left mr-2"></i>Kembali
                     </a>
                 </div>
@@ -92,40 +130,40 @@
         </div>
 
         <!-- Scanner Area -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+        <div class="glass-effect rounded-2xl p-6 mb-6">
             <div class="text-center mb-6">
-                <h2 class="text-xl font-semibold text-white mb-4">Scanner QR Code</h2>
-                <div class="scanner-container bg-black rounded-2xl mx-auto w-full max-w-md h-64 mb-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Scanner QR Code</h2>
+                <div class="scanner-container mx-auto w-full h-64 mb-6">
                     <div class="scanner-overlay"></div>
                     <div class="absolute inset-0 flex items-center justify-center">
-                        <i class="fas fa-qrcode text-white text-6xl opacity-50"></i>
+                        <i class="fas fa-qrcode text-gray-400 text-4xl"></i>
                     </div>
                 </div>
-                <p class="text-blue-100">Arahkan kamera ke QR code barang untuk memindai</p>
+                <p class="text-gray-600">Arahkan kamera ke QR code barang untuk memindai</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button class="btn-primary py-3 rounded-lg text-white font-semibold">
+                <button class="btn-primary py-3 rounded-lg font-semibold flex items-center justify-center">
                     <i class="fas fa-camera mr-2"></i>Aktifkan Kamera
                 </button>
-                <button class="btn-secondary py-3 rounded-lg text-white font-semibold">
+                <button class="btn-secondary py-3 rounded-lg font-semibold flex items-center justify-center">
                     <i class="fas fa-upload mr-2"></i>Unggah Gambar
                 </button>
             </div>
         </div>
 
         <!-- Manual Input -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
-            <h2 class="text-xl font-semibold text-white mb-4">Input Manual</h2>
-            <p class="text-blue-100 mb-4">Gunakan jika QR code tidak dapat dipindai</p>
+        <div class="glass-effect rounded-2xl p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Input Manual</h2>
+            <p class="text-gray-600 mb-4">Gunakan jika QR code tidak dapat dipindai</p>
             
-            <div class="bg-white rounded-xl p-4">
+            <div class="bg-gray-50 rounded-xl p-4">
                 <div class="mb-4">
-                    <label class="block text-gray-700 mb-2">No. Resi Barang</label>
-                    <input type="text" placeholder="Masukkan nomor resi..." class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300">
+                    <label class="block text-gray-700 mb-2 font-medium">No. Resi Barang</label>
+                    <input type="text" placeholder="Masukkan nomor resi..." class="search-input w-full p-3 rounded-lg">
                 </div>
                 
-                <button class="btn-primary w-full py-3 rounded-lg text-white font-semibold">
+                <button class="btn-primary w-full py-3 rounded-lg font-semibold flex items-center justify-center">
                     <i class="fas fa-check-circle mr-2"></i>
                     Konfirmasi Kedatangan
                 </button>
@@ -133,32 +171,38 @@
         </div>
 
         <!-- Barang Terbaru -->
-        <div class="glass-effect rounded-2xl p-6 shadow-xl">
-            <h2 class="text-xl font-semibold text-white mb-4">Barang Terbaru Diterima</h2>
+        <div class="glass-effect rounded-2xl p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Barang Terbaru Diterima</h2>
             
             <div class="space-y-3">
-                <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+                <div class="item-card bg-white rounded-xl p-4">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="font-semibold text-gray-800">RESI00123456</h3>
                             <p class="text-sm text-gray-600">Jakarta - Bandung</p>
                         </div>
-                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Terkonfirmasi</span>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">Terkonfirmasi</span>
                     </div>
                     <p class="text-sm text-gray-500 mt-2">12:30 • 12 Des 2023</p>
                 </div>
 
-                <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+                <div class="item-card bg-white rounded-xl p-4">
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="font-semibold text-gray-800">RESI00123457</h3>
                             <p class="text-sm text-gray-600">Surabaya - Malang</p>
                         </div>
-                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Terkonfirmasi</span>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">Terkonfirmasi</span>
                     </div>
                     <p class="text-sm text-gray-500 mt-2">12:25 • 12 Des 2023</p>
                 </div>
             </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8">
+            <p class="text-gray-600 text-sm">© 2023 Antar Barang - Sistem Manajemen Logistik</p>
+            <p class="text-gray-500 text-xs mt-1">Versi 2.1.0 • Departemen Wilayah</p>
         </div>
     </div>
 
@@ -189,4 +233,3 @@
     </script>
 </body>
 </html>
-
