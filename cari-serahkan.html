@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cari & Serahkan Barang - Antar Barang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+        }
+        
+        .item-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .search-input {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Cari & Serahkan Barang</h1>
+                    <p class="text-blue-100 mt-1">Proses penyerahan barang ke penerima</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="dashboard-wilayah.html" class="btn-secondary px-4 py-2 rounded-lg text-white font-semibold">
+                        <i class="fas fa-arrow-left mr-2"></i>Kembali
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pencarian -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <h2 class="text-xl font-semibold text-white mb-4">Cari Barang</h2>
+            
+            <div class="bg-white rounded-xl p-4 mb-4">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    <input 
+                        type="text" 
+                        placeholder="Masukkan No. Resi atau Nama Penerima..." 
+                        class="search-input w-full pl-10 pr-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-purple-300"
+                        id="searchInput"
+                    >
+                </div>
+                
+                <button class="btn-primary w-full mt-4 py-3 rounded-lg text-white font-semibold" onclick="searchItem()">
+                    <i class="fas fa-search mr-2"></i>
+                    Cari Barang
+                </button>
+            </div>
+
+            <!-- Scanner -->
+            <div class="text-center">
+                <button class="btn-secondary w-full py-3 rounded-lg text-white font-semibold mb-3">
+                    <i class="fas fa-qrcode mr-2"></i>
+                    Scan QR Code
+                </button>
+                <p class="text-blue-100 text-sm">Gunakan scanner untuk mencari barang lebih cepat</p>
+            </div>
+        </div>
+
+        <!-- Hasil Pencarian -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl" id="searchResults" style="display: none;">
+            <h2 class="text-xl font-semibold text-white mb-4">Hasil Pencarian</h2>
+            
+            <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 text-lg">RESI00123456</h3>
+                        <p class="text-sm text-gray-600">Jakarta - Bandung</p>
+                    </div>
+                    <span class="status-badge bg-blue-100 text-blue-800">Tiba di Wilayah</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <p class="text-sm font-medium text-gray-700">Pengirim</p>
+                        <p class="text-gray-600">Budi Santoso</p>
+                        <p class="text-sm text-gray-500">081234567890</p>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-700">Penerima</p>
+                        <p class="text-gray-600">Siti Rahayu</p>
+                        <p class="text-sm text-gray-500">081298765432</p>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="text-sm font-medium text-gray-700">Alamat Pengantaran</p>
+                    <p class="text-gray-600">Jl. Merdeka No. 123, Bandung</p>
+                </div>
+                
+                <div class="flex space-x-2">
+                    <button class="btn-success flex-1 py-2 rounded-lg text-white font-semibold" onclick="deliverItem()">
+                        <i class="fas fa-truck mr-2"></i>
+                        Serahkan
+                    </button>
+                    <button class="btn-secondary flex-1 py-2 rounded-lg text-white font-semibold" onclick="showDetails()">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        Detail
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daftar Barang Siap Serah -->
+        <div class="glass-effect rounded-2xl p-6 shadow-xl">
+            <h2 class="text-xl font-semibold text-white mb-4">Barang Siap Diserahkan</h2>
+            
+            <div class="space-y-3">
+                <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">RESI00123457</h3>
+                            <p class="text-sm text-gray-600">Surabaya - Malang</p>
+                        </div>
+                        <span class="status-badge bg-green-100 text-green-800">Siap Serah</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Ahmad Fauzi • 081277788899</p>
+                </div>
+
+                <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">RESI00123458</h3>
+                            <p class="text-sm text-gray-600">Yogyakarta - Solo</p>
+                        </div>
+                        <span class="status-badge bg-green-100 text-green-800">Siap Serah</span>
+                    </div>
+                    <p class="text-sm text-gray-500">Dewi Lestari • 081255566677</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white font-semibold ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function searchItem() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (searchInput.value.trim()) {
+                searchResults.style.display = 'block';
+                showNotification('Barang ditemukan!', 'success');
+            } else {
+                showNotification('Masukkan kata kunci pencarian terlebih dahulu!', 'error');
+            }
+        }
+
+        function deliverItem() {
+            showNotification('Barang berhasil diserahkan ke penerima!', 'success');
+            
+            // Reset setelah 2 detik
+            setTimeout(() => {
+                document.getElementById('searchResults').style.display = 'none';
+                document.getElementById('searchInput').value = '';
+            }, 2000);
+        }
+
+        function showDetails() {
+            showNotification('Menampilkan detail barang...', 'success');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event listener untuk enter key
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchItem();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
