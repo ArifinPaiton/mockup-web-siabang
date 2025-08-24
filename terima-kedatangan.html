@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terima Kedatangan Barang - Antar Barang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.3);
+        }
+        
+        .scanner-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+        
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 50%, rgba(0, 255, 0, 0.1) 50%);
+            background-size: 100% 4px;
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        .item-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Terima Kedatangan Barang</h1>
+                    <p class="text-blue-100 mt-1">Scan QR code barang yang baru tiba</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="dashboard-wilayah.html" class="btn-secondary px-4 py-2 rounded-lg text-white font-semibold">
+                        <i class="fas fa-arrow-left mr-2"></i>Kembali
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scanner Area -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <div class="text-center mb-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Scanner QR Code</h2>
+                <div class="scanner-container bg-black rounded-2xl mx-auto w-full max-w-md h-64 mb-6">
+                    <div class="scanner-overlay"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <i class="fas fa-qrcode text-white text-6xl opacity-50"></i>
+                    </div>
+                </div>
+                <p class="text-blue-100">Arahkan kamera ke QR code barang untuk memindai</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button class="btn-primary py-3 rounded-lg text-white font-semibold">
+                    <i class="fas fa-camera mr-2"></i>Aktifkan Kamera
+                </button>
+                <button class="btn-secondary py-3 rounded-lg text-white font-semibold">
+                    <i class="fas fa-upload mr-2"></i>Unggah Gambar
+                </button>
+            </div>
+        </div>
+
+        <!-- Manual Input -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <h2 class="text-xl font-semibold text-white mb-4">Input Manual</h2>
+            <p class="text-blue-100 mb-4">Gunakan jika QR code tidak dapat dipindai</p>
+            
+            <div class="bg-white rounded-xl p-4">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">No. Resi Barang</label>
+                    <input type="text" placeholder="Masukkan nomor resi..." class="w-full p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300">
+                </div>
+                
+                <button class="btn-primary w-full py-3 rounded-lg text-white font-semibold">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    Konfirmasi Kedatangan
+                </button>
+            </div>
+        </div>
+
+        <!-- Barang Terbaru -->
+        <div class="glass-effect rounded-2xl p-6 shadow-xl">
+            <h2 class="text-xl font-semibold text-white mb-4">Barang Terbaru Diterima</h2>
+            
+            <div class="space-y-3">
+                <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">RESI00123456</h3>
+                            <p class="text-sm text-gray-600">Jakarta - Bandung</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Terkonfirmasi</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">12:30 • 12 Des 2023</p>
+                </div>
+
+                <div class="item-card bg-white bg-opacity-90 rounded-xl p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">RESI00123457</h3>
+                            <p class="text-sm text-gray-600">Surabaya - Malang</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Terkonfirmasi</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">12:25 • 12 Des 2023</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white font-semibold ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulasi scan berhasil
+            const scanButtons = document.querySelectorAll('.btn-primary, .btn-secondary');
+            scanButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    showNotification('QR code berhasil dipindai! Barang telah dikonfirmasi.', 'success');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
