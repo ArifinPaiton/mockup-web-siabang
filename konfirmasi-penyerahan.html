@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfirmasi Penyerahan Barang - Antar Barang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+        }
+        
+        .item-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .item-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .camera-preview {
+            width: 100%;
+            height: 200px;
+            background-color: #f0f0f0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .checkbox-item:checked + .item-label {
+            border-color: #667eea;
+            background-color: #f0f7ff;
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Konfirmasi Penyerahan Barang</h1>
+                    <p class="text-blue-100 mt-1">Proses penyerahan barang ke penerima</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="cari-serahkan.html" class="btn-primary px-4 py-2 rounded-lg text-white font-semibold">
+                        <i class="fas fa-arrow-left mr-2"></i>Kembali
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Steps -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex-1 text-center">
+                    <div class="w-8 h-8 mx-auto bg-green-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                    <p class="text-white text-sm mt-1">Pilih Barang</p>
+                </div>
+                <div class="flex-1 h-1 bg-gray-300 mx-2"></div>
+                <div class="flex-1 text-center">
+                    <div class="w-8 h-8 mx-auto bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                    <p class="text-white text-sm mt-1">Ambil Foto</p>
+                </div>
+                <div class="flex-1 h-1 bg-gray-300 mx-2"></div>
+                <div class="flex-1 text-center">
+                    <div class="w-8 h-8 mx-auto bg-gray-300 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                    <p class="text-white text-sm mt-1">Konfirmasi</p>
+                </div>
+            </div>
+            
+            <div class="bg-blue-100 bg-opacity-20 rounded-lg p-4">
+                <div class="flex items-center">
+                    <i class="fas fa-info-circle text-blue-300 mr-2"></i>
+                    <p class="text-blue-100 text-sm">Pilih barang yang akan diserahkan, lalu ambil foto penerima dengan barang untuk konfirmasi</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informasi Penerima -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <h2 class="text-xl font-semibold text-white mb-4">Informasi Penerima</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-white">
+                <div>
+                    <p class="text-blue-100">Nama Penerima</p>
+                    <p class="font-semibold">Ahmad Fauzi</p>
+                </div>
+                <div>
+                    <p class="text-blue-100">No. Telepon</p>
+                    <p class="font-semibold">081277788899</p>
+                </div>
+                <div>
+                    <p class="text-blue-100">Total Barang</p>
+                    <p class="font-semibold">2 Item</p>
+                </div>
+                <div>
+                    <p class="text-blue-100">Resi</p>
+                    <p class="font-semibold">RESI00123457</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daftar Barang -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <h2 class="text-xl font-semibold text-white mb-4">Pilih Barang yang Diserahkan</h2>
+            <p class="text-blue-100 mb-4">Centang barang yang akan diserahkan kepada penerima</p>
+            
+            <div class="space-y-3">
+                <!-- Barang 1 -->
+                <div class="flex items-center p-3 border-2 border-gray-200 rounded-lg bg-white bg-opacity-90">
+                    <input type="checkbox" class="checkbox-item hidden" id="item1">
+                    <label for="item1" class="item-label flex items-center space-x-3 cursor-pointer w-full">
+                        <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-200">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6de1d20d-541c-433c-83e8-84780a33051d.png" alt="Paket elektronik berisi smartphone dan aksesoris dalam kotak kardus" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">Paket Elektronik</h4>
+                            <p class="text-sm text-gray-600">Smartphone & Aksesoris</p>
+                            <p class="text-sm text-gray-500">1.2 kg • Fragile</p>
+                        </div>
+                        <i class="fas fa-check-circle text-green-500 text-xl opacity-0 transition-opacity"></i>
+                    </label>
+                </div>
+
+                <!-- Barang 2 -->
+                <div class="flex items-center p-3 border-2 border-gray-200 rounded-lg bg-white bg-opacity-90">
+                    <input type="checkbox" class="checkbox-item hidden" id="item2">
+                    <label for="item2" class="item-label flex items-center space-x-3 cursor-pointer w-full">
+                        <div class="w-16 h-16 rounded-lg overflow-hidden bg-gray-200">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/eb4abf6d-00ee-427a-9efe-bb0133aca130.png" alt="Dokumen penting dalam amplop coklat tebal dengan segel perusahaan" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">Dokumen Penting</h4>
+                            <p class="text-sm text-gray-600">Kontrak Kerja</p>
+                            <p class="text-sm text-gray-500">0.3 kg • Important</p>
+                        </div>
+                        <i class="fas fa-check-circle text-green-500 text-xl opacity-0 transition-opacity"></i>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fitur Foto -->
+        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+            <h2 class="text-xl font-semibold text-white mb-4">Foto Penyerahan</h2>
+            <p class="text-blue-100 mb-4">Ambil foto penerima bersama dengan barang yang diserahkan sebagai bukti</p>
+            
+            <div class="camera-preview mb-4" id="cameraPreview">
+                <i class="fas fa-camera text-gray-400 text-4xl"></i>
+            </div>
+            
+            <button class="btn-primary w-full py-3 rounded-lg text-white font-semibold" onclick="takePhoto()" id="takePhotoBtn">
+                <i class="fas fa-camera mr-2"></i>
+                Ambil Foto Penerima dengan Barang
+            </button>
+            
+            <div class="bg-blue-100 bg-opacity-20 rounded-lg p-3 mt-4" id="photoTips">
+                <p class="text-blue-100 text-sm">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    Pastikan wajah penerima dan semua barang yang diserahkan terlihat jelas dalam foto
+                </p>
+            </div>
+        </div>
+
+        <!-- Tombol Konfirmasi -->
+        <div class="glass-effect rounded-2xl p-6 shadow-xl">
+            <button class="btn-success w-full py-3 rounded-lg text-white font-semibold" onclick="confirmDelivery()" id="confirmBtn" disabled>
+                <i class="fas fa-check-circle mr-2"></i>
+                Konfirmasi Penyerahan Barang
+            </button>
+            
+            <p class="text-blue-100 text-sm mt-3 text-center">
+                Pastikan semua barang telah dipilih dan foto telah diambil sebelum konfirmasi
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let photoTaken = false;
+        let itemsSelected = false;
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white font-semibold ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function takePhoto() {
+            const preview = document.getElementById('cameraPreview');
+            
+            // Simulasi mengambil foto
+            preview.innerHTML = `
+                <div class="w-full h-full bg-green-100 flex items-center justify-center">
+                    <div class="text-center">
+                        <i class="fas fa-check-circle text-green-500 text-4xl mb-2"></i>
+                        <p class="text-sm text-green-700">Foto berhasil diambil</p>
+                        <p class="text-xs text-green-600">12:30 • 12 Des 2023</p>
+                    </div>
+                </div>
+            `;
+            
+            photoTaken = true;
+            updateConfirmButton();
+            showNotification('Foto penerima dengan barang berhasil diambil!', 'success');
+            
+            // Update progress steps
+            document.querySelectorAll('.flex-1.text-center:nth-child(2) .bg-blue-500').forEach(el => {
+                el.classList.remove('bg-blue-500');
+                el.classList.add('bg-green-500');
+            });
+        }
+
+        function confirmDelivery() {
+            const checkboxes = document.querySelectorAll('.checkbox-item:checked');
+            
+            if (checkboxes.length === 0) {
+                showNotification('Pilih setidaknya satu barang untuk diserahkan!', 'error');
+                return;
+            }
+            
+            if (!photoTaken) {
+                showNotification('Ambil foto terlebih dahulu sebelum konfirmasi!', 'error');
+                return;
+            }
+            
+            const selectedItems = Array.from(checkboxes).map(checkbox => {
+                return checkbox.nextElementSibling.querySelector('h4').textContent;
+            });
+            
+            showNotification(`Penyerahan ${selectedItems.length} barang berhasil dikonfirmasi!`, 'success');
+            
+            // Update progress steps
+            document.querySelectorAll('.flex-1.text-center:nth-child(3) .bg-gray-300').forEach(el => {
+                el.classList.remove('bg-gray-300');
+                el.classList.add('bg-green-500');
+            });
+            
+            // Disable button setelah konfirmasi
+            document.getElementById('confirmBtn').disabled = true;
+            document.getElementById('confirmBtn').innerHTML = '<i class="fas fa-check mr-2"></i>Penyerahan Terkonfirmasi';
+        }
+
+        function updateConfirmButton() {
+            const checkboxes = document.querySelectorAll('.checkbox-item:checked');
+            itemsSelected = checkboxes.length > 0;
+            
+            document.getElementById('confirmBtn').disabled = !(itemsSelected && photoTaken);
+        }
+
+        // Handle checkbox selection
+        document.querySelectorAll('.checkbox-item').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const label = this.nextElementSibling;
+                const checkIcon = label.querySelector('.fa-check-circle');
+                
+                if (this.checked) {
+                    checkIcon.style.opacity = '1';
+                } else {
+                    checkIcon.style.opacity = '0';
+                }
+                
+                updateConfirmButton();
+                
+                // Update selected count
+                const selectedCount = document.querySelectorAll('.checkbox-item:checked').length;
+                if (selectedCount > 0) {
+                    // Update progress steps
+                    document.querySelectorAll('.flex-1.text-center:nth-child(1) .bg-green-500').forEach(el => {
+                        el.classList.remove('bg-green-500');
+                        el.classList.add('bg-green-500');
+                    });
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inisialisasi
+            document.querySelectorAll('.flex-1.text-center:nth-child(1) .bg-green-500').forEach(el => {
+                el.classList.remove('bg-green-500');
+                el.classList.add('bg-blue-500');
+            });
+        });
+    </script>
+</body>
+</html>
