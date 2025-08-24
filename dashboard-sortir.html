@@ -9,85 +9,101 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
         
+        :root {
+            --primary-blue: #3B82F6;
+            --secondary-blue: #60A5FA;
+            --light-blue: #DBEAFE;
+            --dark-blue: #1极40AF;
+            --soft-gray: #F8FAFC;
+            --text-dark: #374151;
+            --text-light: #6B7280;
+        }
+        
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--light-blue) 0%, #FFFFFF 100%);
             min-height: 100vh;
+            color: var(--text-dark);
         }
         
         .card-gradient-1 {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
         }
         
         .card-gradient-2 {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
         }
         
         .card-gradient-3 {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
         }
         
         .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
             transition: all 0.3s ease;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
+            color: white;
             transition: all 0.3s ease;
         }
         
         .btn-secondary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10极 25px rgba(245, 87, 108, 0.3);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
         }
         
         .btn-warning {
-            background: linear-gradient(135deg, #ffd93d 0%, #ff9a3d 100%);
+            background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+            color: white;
             transition: all 0.3s ease;
         }
         
         .btn-warning:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 157, 61, 0.3);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
         }
         
         .stat-card {
             transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
         
         .search-input {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid transparent;
+            background: white;
+            border: 2px solid #E5E7EB;
             transition: all 0.3s ease;
         }
         
         .search-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
         .scanner-container {
             position: relative;
             overflow: hidden;
             border-radius: 16px;
+            background: #F3F4F6;
         }
         
         .scanner-overlay {
@@ -96,8 +112,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(transparent 50%, rgba(0, 255, 0, 0.1) 50%);
-            background-size: 100% 4px;
+            background: linear-gradient(transparent 50%, rgba(59, 130, 246, 0.1) 50%);
+            background-size: 极00% 4px;
             animation: scan 2s linear infinite;
         }
         
@@ -113,229 +129,213 @@
             font-weight: 600;
         }
         
-        .tab-button {
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .tab-button.active {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #667eea;
-        }
-        
-        .refresh-animation {
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @media (max-width: 768px) {
+            .responsive-padding {
+                padding: 1rem;
+            }
+            .text-responsive {
+                font-size: 0.9rem;
+            }
+            .stat-card {
+                padding: 1.5rem;
+            }
+            .scanner-container {
+                height: 200px;
+            }
         }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-4xl mx-auto">
-        <!-- Header dengan Glass Effect -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h1 class="text-2xl font-bold text-white">Dashboard Sortir</h1>
-                    <p class="text-blue-100 mt-1">Sistem Manajemen Proses Sortir Barang</p>
+    <div class="w-full max-w-4xl mx-auto responsive-padding">
+        <!-- Header -->
+        <div class="glass-effect rounded-2xl p-6 mb-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <h1 class="text-2xl font-bold text-gray-800">Dashboard Sortir</h1>
+                    <p class="text-gray-600 mt-1">Sistem Manajemen Proses Sortir Barang</p>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-                        <i class="fas fa-user-cog text-2xl text-purple-600"></i>
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user-cog text-xl text-blue-600"></i>
                     </div>
-                    <div>
-                        <p class="text-white font-semibold">Budi Santoso</p>
-                        <p class="text-blue-100 text-sm">Petugas Sortir</p>
+                    <div class="hidden sm:block">
+                        <p class="text-gray-800 font-semibold">Budi Santoso</p>
+                        <p class="text-gray-600 text-sm">Petugas Sortir</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Sambutan dan Statistik -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+        <div class="glass-effect rounded-2xl p-6 mb-6">
             <div class="text-center mb-6">
-                <h2 class="text-xl font-semibold text-white">Selamat Datang, <span class="text-yellow-300">Budi Santoso</span></h2>
-                <p class="text-blue-100 mt-2">Senin, 15 Januari 2024</p>
+                <h2 class="text-xl font-semibold text-gray-800">Selamat Datang, <span class="text-blue-600">Budi Santoso</span></h2>
+                <p class="text-gray-600 mt-2">Senin, 15 Januari 2024</p>
             </div>
 
             <!-- Stat Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="stat-card card-gradient-1 rounded-2xl p-6 text-white text-center">
-                    <div class="w-16 h-16 mx-auto bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-boxes text-2xl"></i>
+                <div class="stat-card card-gradient-1 rounded-2xl p-6 text-center">
+                    <div class="w-14 h-14 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
+                        <i class="fas fa-boxes text-xl text-blue-600"></i>
                     </div>
-                    <h3 class="font-semibold text-lg mb-1">Barang Masuk</h3>
-                    <p class="text-3xl font-bold">156</p>
-                    <p class="text-sm opacity-80 mt-1">Hari ini</p>
+                    <h3 class="font-semibold text-gray-800 text-lg mb-1">Barang Masuk</h3>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800">156</p>
+                    <p class="text-sm text-gray-600 mt-1">Hari ini</p>
                 </div>
 
-                <div class="stat-card card-gradient-2 rounded-2xl p-6 text-white text-center">
-                    <div class="w-16 h-16 mx-auto bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-check-circle text-2xl"></i>
+                <div class="stat-card card-gradient-2 rounded-2xl p-6 text-center">
+                    <div class="w-14 h-14 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
+                        <i class="fas fa-check-circle text-xl text-amber-600"></i>
                     </div>
-                    <h3 class="font-semibold text-lg mb-1">Tersortir</h3>
-                    <p class="text-3xl font-bold">89</p>
-                    <p class="text-sm opacity-80 mt-1">Barang tersortir</p>
+                    <h3 class="font-semibold text-gray-800 text-lg mb-1">Tersortir</h3>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800">89</p>
+                    <p class="text-sm text-gray-600 mt-1">Barang tersortir</p>
                 </div>
 
-                <div class="stat-card card-gradient-3 rounded-2xl p-6 text-white text-center">
-                    <div class="w-16 h-16 mx-auto bg-white bg-opacity-20 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-clock text-2xl"></i>
+                <div class="stat-card card-gradient-3 rounded-2xl p-6 text-center">
+                    <div class="w-14 h-14 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
+                        <i class="fas fa-clock text-xl text-green-600"></i>
                     </div>
-                    <h3 class="font-semibold text-lg mb-1">Belum Sortir</h3>
-                    <p class="text-3xl font-bold">67</p>
-                    <p class="text-sm opacity-80 mt-1">Menunggu proses</p>
+                    <h3 class="font-semibold text-gray-800 text-lg mb-1">Belum Sortir</h3>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800">67</p>
+                    <p class="text-sm极 text-gray-600 mt-1">Menunggu proses</p>
                 </div>
             </div>
 
             <!-- Progress Ringkasan -->
-            <div class="bg-white bg-opacity-90 rounded-2xl p-4">
+            <div class="bg-gray-50 rounded-2xl p-4">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-sm font-medium text-gray-700">Progress Sortir Hari Ini</span>
-                    <span class="text-sm font-bold text-purple-600">57%</span>
+                    <极 class="text-sm font-bold text-blue-600">57%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-gradient-to-r from-purple-400 to-pink-400 h-2 rounded-full" style="width: 57%"></div>
+                    <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full" style="width: 57%"></div>
                 </div>
             </div>
         </div>
 
         <!-- Fitur Utama: Scan & Proses Barang -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+        <div class="glass-effect rounded-2xl p-6 mb-6">
             <div class="flex items-center mb-4">
-                <i class="fas fa-qrcode text-white text-xl mr-3"></i>
-                <h2 class="text-xl font-semibold text-white">Scan & Proses Barang</h2>
+                <i class="fas fa-qrcode text-gray-700 text-xl mr-3"></i>
+                <h2 class="text-xl font-semibold text-gray-800">Scan & Proses Barang</h2>
             </div>
             
-            <div class="scanner-container bg-black rounded-2xl mx-auto w-full h-64 mb-6">
+            <div class="scanner-container mx-auto w-full h-64 mb-6">
                 <div class="scanner-overlay"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <i class="fas fa-qrcode text-white text-6xl opacity-50"></i>
+                    <i class="fas fa-qrcode text-gray-400 text-4xl"></i>
                 </div>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button class="btn-primary py-3 rounded-lg text-white font-semibold flex items-center justify-center">
+                <button class="btn-primary py-3 rounded-lg font-semibold flex items-center justify-center">
                     <i class="fas fa-camera mr-2"></i>
                     Aktifkan Scanner
                 </button>
-                <button class="btn-secondary py-3 rounded-lg text-white font-semibold flex items-center justify-center">
+                <button class="btn-secondary py-3 rounded-lg font-semibold flex items-center justify-center">
                     <i class="fas fa-sync-alt mr-2"></i>
                     Reset Scanner
                 </button>
             </div>
             
-            <div class="bg-white bg-opacity-20 rounded-lg p-3 mt-4">
+            <div class="bg-blue-50 rounded-lg p-3 mt-4">
                 <div class="flex items-center">
-                    <i class="fas fa-info-circle text-blue-300 mr-2"></i>
-                    <p class="text-blue-100 text-sm">Scan QR code barang untuk memproses sortir ke tujuan yang sesuai</p>
-                </div>
+                    <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                    <p class="text-gray-600 text-sm">Scan QR code barang untuk memproses sortir ke tujuan yang sesuai</p>
+                </极>
             </div>
         </div>
 
         <!-- Fitur Cek Tujuan Barang -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 shadow-xl">
+        <div class="glass-effect rounded-2xl p-6 mb-6">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center">
-                    <i class="fas fa-map-marker-alt text-white text-xl mr-3"></i>
-                    <h2 class="text-xl font-semibold text-white">Cek Tujuan Barang</h2>
+                    <i class="fas fa-map-marker-alt text-gray-700 text-xl mr-3"></i>
+                    <h2 class="text-xl font-semibold text-gray-800">Cek Tujuan Barang</h2>
                 </div>
                 <span class="destination-badge bg-blue-100 text-blue-800">Pengecekan</span>
             </div>
             
-            <!-- Tab Navigation -->
-            <div class="flex space-x-2 mb-4">
-                <button class="tab-button text-white px-4 py-2 rounded-lg active flex items-center">
-                    <i class="fas fa-qrcode mr-2"></i>Scan
-                </button>
-                <button class="tab-button text-white px-4 py-2 rounded-lg flex items-center">
-                    <i class="fas fa-keyboard mr-2"></i>Manual
-                </button>
-            </div>
-            
-            <!-- Scan Content -->
-            <div class="scanner-container bg-black rounded-2xl mx-auto w-full h-48 mb-4">
-                <div class="scanner-overlay"></div>
+            <div class="scanner-container mx-auto w-full h-48 mb-4">
+                <div class极="scanner-overlay"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <i class="fas fa-qrcode text-white text-4xl opacity-50"></i>
+                    <i class="fas fa-qrcode text-gray-400 text-3xl"></i>
                 </div>
             </div>
             
-            <button class="btn-warning w-full py-3 rounded-lg text-white font-semibold flex items-center justify-center">
+            <button class="btn-warning w-full py-3 rounded-lg font-semibold flex items-center justify-center">
                 <i class="fas fa-search mr-2"></i>
                 Scan Cek Tujuan
             </button>
 
             <!-- Manual Input -->
-            <div class="bg-white rounded-xl p-4 mt-4">
+            <div class="bg-gray-50 rounded-xl p-4 mt-4">
                 <div class="relative mb-4">
                     <i class="fas fa-barcode absolute left-3 top-3 text-gray-400"></i>
                     <input 
                         type="text" 
                         placeholder="Masukkan No. Resi..." 
-                        class="search-input w-full pl-10 pr-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-purple-300"
+                        class="search-input w-full pl-10 pr-4 py-3 rounded-lg"
                     >
                 </div>
                 
-                <button class="btn-warning w-full py-3 rounded-lg text-white font-semibold flex items-center justify-center">
+                <button class="btn-warning w-full py-3 rounded-lg font-semibold flex items-center justify-center">
                     <i class="fas fa-search-location mr-2"></i>
                     Cek Tujuan Manual
                 </button>
             </div>
             
-            <div class="bg-white bg-opacity-20 rounded-lg p-3 mt-4">
+            <div class="bg-yellow-50 rounded-lg p-3 mt-4">
                 <div class="flex items-center">
-                    <i class="fas fa-lightbulb text-yellow-300 mr-2"></i>
-                    <p class="text-blue-100 text-sm">Gunakan untuk mengecek tujuan barang dan memudahkan pengelompokan</p>
+                    <i class="fas fa-lightbulb text-yellow-400 mr-2"></i>
+                    <p class="text-gray-600 text-sm">Gunakan untuk mengecek tujuan barang dan memudahkan pengelompokan</p>
                 </div>
             </div>
         </div>
 
         <!-- Fitur Cari Barang Manual -->
-        <div class="glass-effect rounded-2xl p-6 shadow-xl">
+        <div class="glass-effect rounded-2xl p-6">
             <div class="flex items-center mb-4">
-                <i class="fas fa-search text-white text-xl mr-3"></i>
-                <h2 class="text-xl font-semibold text-white">Cari Barang Manual</h2>
+                <i class="fas fa-search text-gray-700 text-xl mr-3"></i>
+                <h2 class="text-xl font-semibold text-gray-800">Cari Barang Manual</h2>
             </div>
             
-            <div class="bg-white rounded-xl p-4 mb-4">
+            <div class="bg-gray-50 rounded-xl p-4 mb-4">
                 <div class="relative">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                     <input 
                         type="text" 
                         placeholder="Masukkan No. Resi Barang..." 
-                        class="search-input w-full pl-10 pr-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-purple-300"
+                        class="search-input w-full pl-10 pr-4 py-3 rounded-lg"
                     >
                 </div>
                 
                 <div class="grid grid-cols-2 gap-2 mt-4">
-                    <button class="btn-secondary py-3 rounded-lg text-white font-semibold flex items-center justify-center">
+                    <button class="btn-secondary py-3 rounded-lg font-semibold flex items-center justify-center">
                         <i class="fas fa-box mr-2"></i>
                         Cari Barang
                     </button>
-                    <button class="btn-primary py-3 rounded-lg text-white font-semibold flex items-center justify-center">
+                    <button class="btn-primary py-3 rounded-lg font-semibold flex items-center justify-center">
                         <i class="fas fa-info-circle mr-2"></i>
                         Detail Barang
                     </button>
                 </div>
             </div>
             
-            <div class="bg-white bg-opacity-20 rounded-lg p-3">
+            <div class="bg-red-50 rounded-lg p-3">
                 <div class="flex items-center">
-                    <i class="fas fa-exclamation-triangle text-yellow-300 mr-2"></i>
-                    <p class="text-blue-100 text-sm">Gunakan fitur ini jika QR code barang rusak atau tidak terbaca</p>
+                    <i class="fas fa-exclamation-triangle text-red-400 mr-2"></i>
+                    <p class="text-gray-600 text-sm">Gunakan fitur ini jika QR code barang rusak atau tidak terbaca</p>
                 </div>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="text-center mt-8">
-            <p class="text-blue-100 text-sm">© 2024 Antar Barang - Sistem Manajemen Logistik</p>
-            <p class="text-blue-100 text-xs mt-1">Versi 2.1.0 • Departemen Sortir</p>
+            <p class="text-gray-600 text-sm">© 2024 Antar Barang - Sistem Manajemen Logistik</p>
+            <p class="text-gray-500 text-xs mt-1">Versi 2.1.0 • Departemen Sortir</p>
         </div>
     </div>
 
@@ -354,7 +354,6 @@
             }, 3000);
         }
 
-        // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
             // Scanner buttons
             const scannerBtn = document.querySelector('.btn-primary');
@@ -365,28 +364,6 @@
             const resetBtn = document.querySelector('.btn-secondary');
             resetBtn.addEventListener('click', function() {
                 showNotification('Scanner direset. Siap untuk scan baru.', 'info');
-            });
-            
-            // Check destination buttons
-            const scanDestBtn = document.querySelector('.btn-warning');
-            scanDestBtn.addEventListener('click', function() {
-                showNotification('Memindai untuk mengecek tujuan barang...', 'success');
-            });
-            
-            const manualDestBtn = document.querySelectorAll('.btn-warning')[1];
-            manualDestBtn.addEventListener('click', function() {
-                showNotification('Mengecek tujuan barang secara manual...', 'success');
-            });
-            
-            // Manual search buttons
-            const searchBtn = document.querySelectorAll('.btn-secondary')[1];
-            searchBtn.addEventListener('click', function() {
-                showNotification('Mencari barang secara manual...', 'success');
-            });
-            
-            const detailBtn = document.querySelectorAll('.btn-primary')[2];
-            detailBtn.addEventListener('click', function() {
-                showNotification('Menampilkan detail barang...', 'success');
             });
         });
     </script>
