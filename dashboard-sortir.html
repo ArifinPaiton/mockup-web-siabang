@@ -13,7 +13,7 @@
             --primary-blue: #3B82F6;
             --secondary-blue: #60A5FA;
             --light-blue: #DBEAFE;
-            --dark-blue: #1E40AF; /* Mengoreksi '1极40AF' menjadi '1E40AF' */
+            --dark-blue: #1E40AF;
             --soft-gray: #F8FAFC;
             --text-dark: #374151;
             --text-light: #6B7280;
@@ -113,7 +113,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(transparent 50%, rgba(59, 130, 246, 0.1) 50%);
-            background-size: 100% 4px; /* Mengoreksi '极00%' menjadi '100%' */
+            background-size: 100% 4px;
             animation: scan 2s linear infinite;
         }
         
@@ -129,6 +129,59 @@
             font-weight: 600;
         }
         
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+            max-width: 500px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        .modal-close {
+            float: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #6B7280;
+        }
+        .modal-close:hover {
+            color: #374151;
+        }
+        .highlight-destination {
+            background-color: #DBEAFE; /* light-blue */
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
         @media (max-width: 768px) {
             .responsive-padding {
                 padding: 1rem;
@@ -141,6 +194,9 @@
             }
             .scanner-container {
                 height: 200px;
+            }
+            .modal-content {
+                padding: 1.5rem;
             }
         }
     </style>
@@ -199,7 +255,7 @@
                     </div>
                     <h3 class="font-semibold text-gray-800 text-lg mb-1">Belum Sortir</h3>
                     <p class="text-2xl md:text-3xl font-bold text-gray-800">67</p>
-                    <p class="text-sm text-gray-600 mt-1">Menunggu proses</p> <!-- Mengoreksi 'text-sm极' menjadi 'text-sm' -->
+                    <p class="text-sm text-gray-600 mt-1">Menunggu proses</p>
                 </div>
             </div>
 
@@ -207,7 +263,7 @@
             <div class="bg-gray-50 rounded-2xl p-4">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-sm font-medium text-gray-700">Progress Sortir Hari Ini</span>
-                    <span class="text-sm font-bold text-blue-600">57%</span> <!-- Mengoreksi '极' menjadi 'span' -->
+                    <span class="text-sm font-bold text-blue-600">57%</span>
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2">
                     <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full" style="width: 57%"></div>
@@ -230,7 +286,7 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button class="btn-primary py-3 rounded-lg font-semibold flex items-center justify-center">
+                <button class="btn-primary py-3 rounded-lg font-semibold flex items-center justify-center" id="activateScannerBtn">
                     <i class="fas fa-camera mr-2"></i>
                     Aktifkan Scanner
                 </button>
@@ -244,7 +300,7 @@
                 <div class="flex items-center">
                     <i class="fas fa-info-circle text-blue-400 mr-2"></i>
                     <p class="text-gray-600 text-sm">Scan QR code barang untuk memproses sortir ke tujuan yang sesuai</p>
-                </div> <!-- Mengoreksi '极' menjadi 'div' -->
+                </div>
             </div>
         </div>
 
@@ -259,13 +315,13 @@
             </div>
             
             <div class="scanner-container mx-auto w-full h-48 mb-4">
-                <div class="scanner-overlay"></div> <!-- Mengoreksi '极' menjadi 'div' -->
+                <div class="scanner-overlay"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
                     <i class="fas fa-qrcode text-gray-400 text-3xl"></i>
                 </div>
             </div>
             
-            <button class="btn-warning w-full py-3 rounded-lg font-semibold flex items-center justify-center">
+            <button class="btn-warning w-full py-3 rounded-lg font-semibold flex items-center justify-center" id="scanCheckPurposeBtn">
                 <i class="fas fa-search mr-2"></i>
                 Scan Cek Tujuan
             </button>
@@ -278,10 +334,11 @@
                         type="text" 
                         placeholder="Masukkan No. Resi..." 
                         class="search-input w-full pl-10 pr-4 py-3 rounded-lg"
+                        id="manualCheckPurposeResiInput"
                     >
                 </div>
                 
-                <button class="btn-warning w-full py-3 rounded-lg font-semibold flex items-center justify-center">
+                <button class="btn-warning w-full py-3 rounded-lg font-semibold flex items-center justify-center" id="manualCheckPurposeBtn">
                     <i class="fas fa-search-location mr-2"></i>
                     Cek Tujuan Manual
                 </button>
@@ -340,6 +397,19 @@
         </div>
     </div>
 
+    <!-- Modal untuk Cek Tujuan Barang -->
+    <div id="purposeCheckModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Detail Tujuan Barang</h3>
+            <div id="modalContent">
+                <!-- Konten detail tujuan akan dimuat di sini -->
+                <p class="text-gray-600">Memuat informasi...</p>
+            </div>
+            <button class="btn-primary w-full py-2 rounded-lg font-semibold mt-6" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
     <script>
         function showNotification(message, type) {
             const notification = document.createElement('div');
@@ -355,38 +425,129 @@
             }, 3000);
         }
 
+        // Data simulasi untuk barang (sama seperti di detail-proses-barang.html)
+        const mockItemData = {
+            'RESI00123456': {
+                sender: 'Budi Santoso',
+                receiver: 'Siti Rahayu',
+                destination: 'Bandung',
+                targetRegion: 'Wilayah Bandung',
+                itemType: 'elektronik',
+                description: 'Laptop dan charger'
+            },
+            'RESI00123457': {
+                sender: 'Ahmad Fauzi',
+                receiver: 'Dewi Lestari',
+                destination: 'Surabaya',
+                targetRegion: 'Wilayah Surabaya',
+                itemType: 'dokumen',
+                description: 'Kontrak kerja penting'
+            },
+            'RESI00123458': {
+                sender: 'Citra Kirana',
+                receiver: 'Joko Susilo',
+                destination: 'Medan',
+                targetRegion: null, // Simulasi tujuan wilayah belum ada
+                itemType: 'pakaian',
+                description: 'Baju batik ukuran L'
+            },
+            'RESI00123459': { // Contoh resi yang tidak ditemukan
+                sender: 'Pengirim X',
+                receiver: 'Penerima Y',
+                destination: 'Jakarta',
+                targetRegion: null,
+                itemType: 'lainnya',
+                description: 'Barang umum'
+            }
+        };
+
+        // Fungsi untuk menampilkan modal
+        function openModal(resiNumber) {
+            const modal = document.getElementById('purposeCheckModal');
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = '<p class="text-gray-600">Memuat informasi...</p>'; // Reset content
+
+            // Simulasi pengambilan data
+            setTimeout(() => {
+                const item = mockItemData[resiNumber];
+                if (item) {
+                    let contentHtml = `
+                        <p class="text-gray-700 mb-2"><span class="font-semibold">No. Resi:</span> ${resiNumber}</p>
+                        <p class="text-gray-700 mb-2"><span class="font-semibold">Pengirim:</span> ${item.sender}</p>
+                        <p class="text-gray-700 mb-2"><span class="font-semibold">Penerima:</span> ${item.receiver}</p>
+                        <p class="text-gray-700 mb-2"><span class="font-semibold">Tujuan Pengiriman:</span> ${item.destination}</p>
+                    `;
+                    if (item.targetRegion) {
+                        contentHtml += `
+                            <p class="text-gray-700 mt-4">Barang ini akan disortir ke:</p>
+                            <p class="highlight-destination text-2xl">${item.targetRegion}</p>
+                        `;
+                    } else {
+                        contentHtml += `
+                            <p class="text-orange-600 font-semibold mt-4">Tujuan wilayah belum ditentukan.</p>
+                            <p class="text-gray-600 text-sm mt-1">Silahkan cek berkala atau hubungi admin.</p>
+                        `;
+                    }
+                    modalContent.innerHTML = contentHtml;
+                } else {
+                    modalContent.innerHTML = `
+                        <p class="text-red-600 font-semibold">Barang dengan resi ${resiNumber} tidak ditemukan.</p>
+                        <p class="text-gray-600 text-sm mt-1">Mohon periksa kembali nomor resi.</p>
+                    `;
+                }
+                modal.classList.add('show');
+            }, 700); // Simulasi delay
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById('purposeCheckModal').classList.remove('show');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Scanner buttons
-            const scannerBtn = document.querySelector('.glass-effect:nth-of-type(3) .btn-primary'); // Lebih spesifik
-            if (scannerBtn) {
-                scannerBtn.addEventListener('click', function() {
-                    showNotification('Scanner kamera diaktifkan!', 'success');
+            // Event listener untuk tombol "Aktifkan Scanner" (Scan & Proses Barang)
+            const activateScannerBtn = document.getElementById('activateScannerBtn');
+            if (activateScannerBtn) {
+                activateScannerBtn.addEventListener('click', function() {
+                    showNotification('Scanner kamera diaktifkan! Mensimulasikan scan...', 'success');
+                    // Simulasi hasil scan setelah beberapa saat
+                    setTimeout(() => {
+                        const simulatedResi = 'RESI00123456'; // Contoh resi hasil scan
+                        const encodedResi = encodeURIComponent(simulatedResi);
+                        window.location.href = `detail-proses-barang.html?resi=${encodedResi}`;
+                    }, 1500); // Redirect setelah 1.5 detik
                 });
             }
             
-            const resetBtn = document.querySelector('.glass-effect:nth-of-type(3) .btn-secondary'); // Lebih spesifik
-            if (resetBtn) {
-                resetBtn.addEventListener('click', function() {
+            // Event listener untuk tombol "Reset Scanner"
+            const resetScannerBtn = document.querySelector('.glass-effect:nth-of-type(3) .btn-secondary');
+            if (resetScannerBtn) {
+                resetScannerBtn.addEventListener('click', function() {
                     showNotification('Scanner direset. Siap untuk scan baru.', 'info');
                 });
             }
 
             // Event listener untuk tombol "Scan Cek Tujuan"
-            const scanCheckPurposeBtn = document.querySelector('.glass-effect:nth-of-type(4) .btn-warning');
+            const scanCheckPurposeBtn = document.getElementById('scanCheckPurposeBtn');
             if (scanCheckPurposeBtn) {
                 scanCheckPurposeBtn.addEventListener('click', function() {
                     showNotification('Memulai scan untuk cek tujuan barang...', 'info');
+                    // Simulasi hasil scan untuk cek tujuan
+                    setTimeout(() => {
+                        const simulatedResi = 'RESI00123458'; // Contoh resi untuk cek tujuan (yang belum ada tujuan)
+                        openModal(simulatedResi);
+                    }, 1500);
                 });
             }
 
             // Event listener untuk tombol "Cek Tujuan Manual"
-            const manualCheckPurposeBtn = document.querySelector('.glass-effect:nth-of-type(4) .bg-gray-50 .btn-warning');
+            const manualCheckPurposeBtn = document.getElementById('manualCheckPurposeBtn');
             if (manualCheckPurposeBtn) {
                 manualCheckPurposeBtn.addEventListener('click', function() {
-                    const resiInput = manualCheckPurposeBtn.closest('.bg-gray-50').querySelector('.search-input');
+                    const resiInput = document.getElementById('manualCheckPurposeResiInput');
                     if (resiInput && resiInput.value.trim()) {
-                        showNotification(`Mengecek tujuan untuk resi: ${resiInput.value}`, 'info');
-                        // Di sini Anda akan menambahkan logika untuk benar-benar mengecek tujuan
+                        const resi = resiInput.value.trim().toUpperCase(); // Pastikan uppercase
+                        openModal(resi);
                     } else {
                         showNotification('Masukkan nomor resi untuk cek tujuan manual!', 'error');
                     }
@@ -397,26 +558,12 @@
             const searchItemManualBtn = document.querySelector('.glass-effect:nth-of-type(5) .btn-secondary');
             if (searchItemManualBtn) {
                 searchItemManualBtn.addEventListener('click', function() {
-                    const resiInput = searchItemManualBtn.closest('.bg-gray-50').querySelector('.search-input');
+                    const resiInput = document.getElementById('manualSearchResiInput');
                     if (resiInput && resiInput.value.trim()) {
                         showNotification(`Mencari barang dengan resi: ${resiInput.value}`, 'info');
-                        // Logika pencarian barang
+                        // Logika pencarian barang (bisa menampilkan detail di halaman ini atau modal)
                     } else {
                         showNotification('Masukkan nomor resi untuk mencari barang!', 'error');
-                    }
-                });
-            }
-
-            // Event listener untuk tombol "Detail Barang" (manual search)
-            const detailItemManualBtn = document.querySelector('.glass-effect:nth-of-type(5) .btn-primary');
-            if (detailItemManualBtn) {
-                detailItemManualBtn.addEventListener('click', function() {
-                    const resiInput = detailItemManualBtn.closest('.bg-gray-50').querySelector('.search-input');
-                    if (resiInput && resiInput.value.trim()) {
-                        showNotification(`Menampilkan detail untuk resi: ${resiInput.value}`, 'info');
-                        // Logika menampilkan detail barang
-                    } else {
-                        showNotification('Masukkan nomor resi untuk melihat detail barang!', 'error');
                     }
                 });
             }
@@ -434,6 +581,16 @@
                     }
                 });
             }
+
+            // Event listener untuk menutup modal saat klik tombol close (x)
+            document.querySelector('.modal-close').addEventListener('click', closeModal);
+
+            // Event listener untuk menutup modal saat klik di luar modal content
+            document.getElementById('purposeCheckModal').addEventListener('click', function(event) {
+                if (event.target === this) { // Hanya jika klik langsung pada overlay modal
+                    closeModal();
+                }
+            });
         });
     </script>
 </body>
