@@ -174,6 +174,19 @@
             cursor: pointer;
             font-size: 1.2rem;
         }
+        .search-input {
+            background: white;
+            border: 2px solid #E5E7EB;
+            transition: all 0.3s ease;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            width: 100%;
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
 
         @media (max-width: 768px) {
             .responsive-padding {
@@ -324,6 +337,23 @@
                 Pindai Barang Lain
             </button>
 
+            <!-- Input Resi Manual -->
+            <div class="bg-gray-50 rounded-xl p-4 mb-4">
+                <div class="relative">
+                    <i class="fas fa-barcode absolute left-3 top-3 text-gray-400"></i>
+                    <input 
+                        type="text" 
+                        placeholder="Masukkan No. Resi Manual..." 
+                        class="search-input w-full pl-10 pr-4 py-3 rounded-lg"
+                        id="manualResiInput"
+                    >
+                </div>
+                <button class="btn-primary w-full mt-3 py-2 rounded-lg font-semibold flex items-center justify-center" id="addManualResiBtn">
+                    <i class="fas fa-plus mr-2"></i>
+                    Tambahkan Resi Manual
+                </button>
+            </div>
+
             <div id="scannedItemsList" class="space-y-3 mb-6 max-h-60 overflow-y-auto">
                 <!-- Daftar barang yang dipindai akan muncul di sini -->
                 <p class="text-gray-600 text-center" id="noItemsMessage">Belum ada barang yang dipindai.</p>
@@ -370,6 +400,7 @@
         function openScanAngkutModal() {
             document.getElementById('scanAngkutModal').classList.add('show');
             updateScannedItemsList(); // Perbarui daftar saat modal dibuka
+            document.getElementById('manualResiInput').value = ''; // Bersihkan input manual
         }
 
         // Fungsi untuk menutup modal Scan & Angkut
@@ -382,12 +413,17 @@
 
         // Fungsi untuk menambahkan item yang dipindai ke daftar
         function addScannedItem(resi) {
-            if (!scannedItems.includes(resi)) { // Pastikan tidak ada duplikat
-                scannedItems.push(resi);
-                showNotification(`Barang ${resi} berhasil dipindai!`, 'success');
+            const formattedResi = resi.toUpperCase().trim(); // Format resi
+            if (!formattedResi) {
+                showNotification('Nomor resi tidak boleh kosong!', 'error');
+                return;
+            }
+            if (!scannedItems.includes(formattedResi)) { // Pastikan tidak ada duplikat
+                scannedItems.push(formattedResi);
+                showNotification(`Barang ${formattedResi} berhasil ditambahkan!`, 'success');
                 updateScannedItemsList();
             } else {
-                showNotification(`Barang ${resi} sudah ada di daftar.`, 'info');
+                showNotification(`Barang ${formattedResi} sudah ada di daftar.`, 'info');
             }
         }
 
@@ -440,11 +476,25 @@
             // Event listener untuk tombol "Mulai Scan Barang"
             document.getElementById('startScanAngkutBtn').addEventListener('click', openScanAngkutModal);
 
-            // Event listener untuk tombol "Pindai Barang Lain" di modal
+            // Event listener untuk tombol "Pindai Barang Lain" di modal (simulasi scan)
             document.getElementById('addMoreScanBtn').addEventListener('click', function() {
                 // Simulasi scan QR Code baru
                 const newResi = `RESI${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`;
                 addScannedItem(newResi);
+            });
+
+            // Event listener untuk tombol "Tambahkan Resi Manual"
+            document.getElementById('addManualResiBtn').addEventListener('click', function() {
+                const manualResiInput = document.getElementById('manualResiInput');
+                addScannedItem(manualResiInput.value);
+                manualResiInput.value = ''; // Bersihkan input setelah ditambahkan
+            });
+
+            // Event listener untuk Enter key pada input resi manual
+            document.getElementById('manualResiInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('addManualResiBtn').click();
+                }
             });
 
             // Event listener untuk tombol "Konfirmasi Pengangkutan"
