@@ -309,6 +309,7 @@
                         type="text" 
                         placeholder="Masukkan No. Resi Barang..." 
                         class="search-input w-full pl-10 pr-4 py-3 rounded-lg"
+                        id="manualSearchResiInput"
                     >
                 </div>
                 
@@ -414,6 +415,20 @@
                     if (resiInput && resiInput.value.trim()) {
                         showNotification(`Menampilkan detail untuk resi: ${resiInput.value}`, 'info');
                         // Logika menampilkan detail barang
+                    } else {
+                        showNotification('Masukkan nomor resi untuk melihat detail barang!', 'error');
+                    }
+                });
+            }
+
+            // Event listener untuk tombol "Detail Barang" (manual search)
+            const goToDetailBtn = document.getElementById('goToDetailBtn');
+            if (goToDetailBtn) {
+                goToDetailBtn.addEventListener('click', function() {
+                    const resiInput = document.getElementById('manualSearchResiInput');
+                    if (resiInput && resiInput.value.trim()) {
+                        const resi = encodeURIComponent(resiInput.value.trim());
+                        window.location.href = `detail-proses-barang.html?resi=${resi}`;
                     } else {
                         showNotification('Masukkan nomor resi untuk melihat detail barang!', 'error');
                     }
