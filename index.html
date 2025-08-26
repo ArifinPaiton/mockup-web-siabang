@@ -9,6 +9,7 @@
       font-family: Arial, sans-serif;
       background: #f3f4f6;
       display: flex;
+      flex-direction: column; /* Mengubah arah flex menjadi kolom */
       justify-content: center;
       align-items: center;
       height: 100vh;
@@ -20,12 +21,18 @@
       padding: 40px;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 20px; /* Memberi sedikit jarak dari tombol di bawahnya */
     }
     h1 {
       margin-bottom: 20px;
       color: #111827;
     }
-    a {
+    .button-group {
+      display: flex;
+      flex-direction: column; /* Tombol dalam grup juga diatur dalam kolom */
+      gap: 15px; /* Jarak antar tombol */
+    }
+    .button-group a {
       display: inline-block;
       padding: 12px 24px;
       background: #2563eb;
@@ -34,17 +41,29 @@
       border-radius: 8px;
       font-size: 16px;
       transition: background 0.3s;
+      min-width: 200px; /* Agar tombol memiliki lebar yang seragam */
     }
-    a:hover {
+    .button-group a:hover {
       background: #1e40af;
+    }
+    /* Gaya tambahan untuk tombol dashboard sortir */
+    .button-group a.btn-sortir {
+        background: #10B981; /* Warna hijau */
+    }
+    .button-group a.btn-sortir:hover {
+        background: #059669; /* Warna hijau lebih gelap saat hover */
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Selamat Datang</h1>
-    <p>Klik tombol di bawah untuk masuk ke dashboard wilayah</p>
+    <p>Pilih dashboard yang ingin Anda akses:</p>
+  </div>
+
+  <div class="button-group">
     <a href="dashboard-wilayah.html">Masuk Dashboard Wilayah</a>
+    <a href="dashboard-sortir.html" class="btn-sortir">Masuk Dashboard Sortir</a>
   </div>
 </body>
 </html>
