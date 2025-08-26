@@ -13,7 +13,7 @@
             --primary-blue: #3B82F6;
             --secondary-blue: #60A5FA;
             --light-blue: #DBEAFE;
-            --dark-blue: #1极40AF;
+            --dark-blue: #1E40AF; /* Mengoreksi '1极40AF' menjadi '1E40AF' */
             --soft-gray: #F8FAFC;
             --text-dark: #374151;
             --text-light: #6B7280;
@@ -113,7 +113,7 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(transparent 50%, rgba(59, 130, 246, 0.1) 50%);
-            background-size: 极00% 4px;
+            background-size: 100% 4px; /* Mengoreksi '极00%' menjadi '100%' */
             animation: scan 2s linear infinite;
         }
         
@@ -199,7 +199,7 @@
                     </div>
                     <h3 class="font-semibold text-gray-800 text-lg mb-1">Belum Sortir</h3>
                     <p class="text-2xl md:text-3xl font-bold text-gray-800">67</p>
-                    <p class="text-sm极 text-gray-600 mt-1">Menunggu proses</p>
+                    <p class="text-sm text-gray-600 mt-1">Menunggu proses</p> <!-- Mengoreksi 'text-sm极' menjadi 'text-sm' -->
                 </div>
             </div>
 
@@ -207,7 +207,7 @@
             <div class="bg-gray-50 rounded-2xl p-4">
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-sm font-medium text-gray-700">Progress Sortir Hari Ini</span>
-                    <极 class="text-sm font-bold text-blue-600">57%</span>
+                    <span class="text-sm font-bold text-blue-600">57%</span> <!-- Mengoreksi '极' menjadi 'span' -->
                 </div>
                 <div class="w-full bg-gray-200 rounded-full h-2">
                     <div class="bg-gradient-to-r from-blue-400 to-blue-600 h-2 rounded-full" style="width: 57%"></div>
@@ -244,7 +244,7 @@
                 <div class="flex items-center">
                     <i class="fas fa-info-circle text-blue-400 mr-2"></i>
                     <p class="text-gray-600 text-sm">Scan QR code barang untuk memproses sortir ke tujuan yang sesuai</p>
-                </极>
+                </div> <!-- Mengoreksi '极' menjadi 'div' -->
             </div>
         </div>
 
@@ -259,7 +259,7 @@
             </div>
             
             <div class="scanner-container mx-auto w-full h-48 mb-4">
-                <div class极="scanner-overlay"></div>
+                <div class="scanner-overlay"></div> <!-- Mengoreksi '极' menjadi 'div' -->
                 <div class="absolute inset-0 flex items-center justify-center">
                     <i class="fas fa-qrcode text-gray-400 text-3xl"></i>
                 </div>
@@ -356,15 +356,69 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             // Scanner buttons
-            const scannerBtn = document.querySelector('.btn-primary');
-            scannerBtn.addEventListener('click', function() {
-                showNotification('Scanner kamera diaktifkan!', 'success');
-            });
+            const scannerBtn = document.querySelector('.glass-effect:nth-of-type(3) .btn-primary'); // Lebih spesifik
+            if (scannerBtn) {
+                scannerBtn.addEventListener('click', function() {
+                    showNotification('Scanner kamera diaktifkan!', 'success');
+                });
+            }
             
-            const resetBtn = document.querySelector('.btn-secondary');
-            resetBtn.addEventListener('click', function() {
-                showNotification('Scanner direset. Siap untuk scan baru.', 'info');
-            });
+            const resetBtn = document.querySelector('.glass-effect:nth-of-type(3) .btn-secondary'); // Lebih spesifik
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function() {
+                    showNotification('Scanner direset. Siap untuk scan baru.', 'info');
+                });
+            }
+
+            // Event listener untuk tombol "Scan Cek Tujuan"
+            const scanCheckPurposeBtn = document.querySelector('.glass-effect:nth-of-type(4) .btn-warning');
+            if (scanCheckPurposeBtn) {
+                scanCheckPurposeBtn.addEventListener('click', function() {
+                    showNotification('Memulai scan untuk cek tujuan barang...', 'info');
+                });
+            }
+
+            // Event listener untuk tombol "Cek Tujuan Manual"
+            const manualCheckPurposeBtn = document.querySelector('.glass-effect:nth-of-type(4) .bg-gray-50 .btn-warning');
+            if (manualCheckPurposeBtn) {
+                manualCheckPurposeBtn.addEventListener('click', function() {
+                    const resiInput = manualCheckPurposeBtn.closest('.bg-gray-50').querySelector('.search-input');
+                    if (resiInput && resiInput.value.trim()) {
+                        showNotification(`Mengecek tujuan untuk resi: ${resiInput.value}`, 'info');
+                        // Di sini Anda akan menambahkan logika untuk benar-benar mengecek tujuan
+                    } else {
+                        showNotification('Masukkan nomor resi untuk cek tujuan manual!', 'error');
+                    }
+                });
+            }
+
+            // Event listener untuk tombol "Cari Barang" (manual search)
+            const searchItemManualBtn = document.querySelector('.glass-effect:nth-of-type(5) .btn-secondary');
+            if (searchItemManualBtn) {
+                searchItemManualBtn.addEventListener('click', function() {
+                    const resiInput = searchItemManualBtn.closest('.bg-gray-50').querySelector('.search-input');
+                    if (resiInput && resiInput.value.trim()) {
+                        showNotification(`Mencari barang dengan resi: ${resiInput.value}`, 'info');
+                        // Logika pencarian barang
+                    } else {
+                        showNotification('Masukkan nomor resi untuk mencari barang!', 'error');
+                    }
+                });
+            }
+
+            // Event listener untuk tombol "Detail Barang" (manual search)
+            const detailItemManualBtn = document.querySelector('.glass-effect:nth-of-type(5) .btn-primary');
+            if (detailItemManualBtn) {
+                detailItemManualBtn.addEventListener('click', function() {
+                    const resiInput = detailItemManualBtn.closest('.bg-gray-50').querySelector('.search-input');
+                    if (resiInput && resiInput.value.trim()) {
+                        showNotification(`Menampilkan detail untuk resi: ${resiInput.value}`, 'info');
+                        // Logika menampilkan detail barang
+                    } else {
+                        showNotification('Masukkan nomor resi untuk melihat detail barang!', 'error');
+                    }
+                });
+            }
         });
     </script>
 </body>
