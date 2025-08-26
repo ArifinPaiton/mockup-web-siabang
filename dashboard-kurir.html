@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kurir - Antar Barang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-blue: #3B82F6;
+            --secondary-blue: #60A5FA;
+            --light-blue: #DBEAFE;
+            --dark-blue: #1E40AF;
+            --soft-gray: #F8FAFC;
+            --text-dark: #374151;
+            --text-light: #6B7280;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, var(--light-blue) 0%, #FFFFFF 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+        
+        .card-gradient-1 {
+            background: linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%);
+        }
+        
+        .card-gradient-2 {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+        }
+        
+        .card-gradient-3 {
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+        }
+
+        .card-gradient-4 {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%); /* Reddish for in-transit */
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .stat-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .scanner-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #F3F4F6;
+        }
+        
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 50%, rgba(59, 130, 246, 0.1) 50%);
+            background-size: 100% 4px;
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+            max-width: 600px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        .modal-close {
+            float: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #6B7280;
+        }
+        .modal-close:hover {
+            color: #374151;
+        }
+        .scanned-item {
+            background-color: #F8FAFC;
+            border: 1px solid #E5E7EB;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .scanned-item .remove-btn {
+            color: #EF4444;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .responsive-padding {
+                padding: 1rem;
+            }
+            .text-responsive {
+                font-size: 0.9rem;
+            }
+            .stat-card {
+                padding: 1.5rem;
+            }
+            .scanner-container {
+                height: 200px;
+            }
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl mx-auto responsive-padding">
+        <!-- Header -->
+        <div class="glass-effect rounded-2xl p-6 mb-6">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <h1 class="text-2xl font-bold text-gray-800">Dashboard Kurir</h1>
+                    <p class="text-gray-600 mt-1">Sistem Manajemen Pengangkutan Barang</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-truck-moving text-xl text-blue-600"></i>
+                    </div>
+                    <div class="hidden sm:block">
+                        <p class="text-gray-800 font-semibold">Rizky Pratama</p>
+                        <p class="text-gray-600 text-sm">Kurir Utama</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sambutan dan Statistik -->
+        <div class="glass-effect rounded-2xl p-6 mb-6">
+            <div class="text-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Selamat Datang, <span class="text-blue-600">Rizky Pratama</span></h2>
+                <p class="text-gray-600 mt-2">Rabu, 17 Januari 2024</p>
+            </div>
+
+            <!-- Informasi Ringkas: Barang di Pos -->
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Barang di Pos</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="stat-card card-gradient-1 rounded-2xl p-4 text-center">
+                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-warehouse text-xl text-blue-600"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 text-md mb-1">Penerimaan</h4>
+                    <p class="text-xl font-bold text-gray-800" id="statPenerimaan">0</p>
+                </div>
+
+                <div class="stat-card card-gradient-2 rounded-2xl p-4 text-center">
+                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-male text-xl text-amber-600"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 text-md mb-1">Sortir Putra</h4>
+                    <p class="text-xl font-bold text-gray-800" id="statSortirPutra">0</p>
+                </div>
+
+                <div class="stat-card card-gradient-3 rounded-2xl p-4 text-center">
+                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-female text-xl text-green-600"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 text-md mb-1">Sortir Putri</h4>
+                    <p class="text-xl font-bold text-gray-800" id="statSortirPutri">0</p>
+                </div>
+            </div>
+
+            <!-- Informasi Ringkas: Barang Sedang Diangkut -->
+            <h3 class="text-lg font-semibold text-gray-800 mb-3">Barang Sedang Diangkut</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="stat-card card-gradient-4 rounded-2xl p-4 text-center">
+                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-truck-loading text-xl text-red-600"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 text-md mb-1">Menuju Sortir</h4>
+                    <p class="text-xl font-bold text-gray-800" id="statMenujuSortir">0</p>
+                </div>
+
+                <div class="stat-card card-gradient-1 rounded-2xl p-4 text-center">
+                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-2">
+                        <i class="fas fa-map-marker-alt text-xl text-blue-600"></i>
+                    </div>
+                    <h4 class="font-semibold text-gray-800 text-md mb-1">Menuju Wilayah</h4>
+                    <p class="text-xl font-bold text-gray-800" id="statMenujuWilayah">0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fitur Utama: Scan & Angkut Barang -->
+        <div class="glass-effect rounded-2xl p-6">
+            <div class="flex items-center mb-4">
+                <i class="fas fa-barcode text-gray-700 text-xl mr-3"></i>
+                <h2 class="text-xl font-semibold text-gray-800">Scan & Angkut Barang</h2>
+            </div>
+            
+            <p class="text-gray-600 mb-4">Pindai QR Code barang yang akan Anda angkut. Anda bisa memindai beberapa barang sekaligus.</p>
+
+            <div class="scanner-container mx-auto w-full h-64 mb-6">
+                <div class="scanner-overlay"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <i class="fas fa-qrcode text-gray-400 text-4xl"></i>
+                </div>
+            </div>
+            
+            <button class="btn-primary w-full py-3 rounded-lg font-semibold flex items-center justify-center" id="startScanAngkutBtn">
+                <i class="fas fa-camera mr-2"></i>
+                Mulai Scan Barang
+            </button>
+            
+            <div class="bg-blue-50 rounded-lg p-3 mt-4">
+                <div class="flex items-center">
+                    <i class="fas fa-info-circle text-blue-400 mr-2"></i>
+                    <p class="text-gray-600 text-sm">Setelah scan, daftar barang akan muncul di pop-up untuk konfirmasi.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8">
+            <p class="text-gray-600 text-sm">© 2024 Antar Barang - Sistem Manajemen Logistik</p>
+            <p class="text-gray-500 text-xs mt-1">Versi 2.1.0 • Departemen Kurir</p>
+        </div>
+    </div>
+
+    <!-- Modal untuk Scan & Angkut Barang -->
+    <div id="scanAngkutModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeScanAngkutModal()">&times;</span>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Daftar Barang yang Dipindai</h3>
+            
+            <div class="scanner-container mx-auto w-full h-48 mb-4">
+                <div class="scanner-overlay"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <i class="fas fa-qrcode text-gray-400 text-3xl"></i>
+                </div>
+            </div>
+            <button class="btn-secondary w-full py-2 rounded-lg font-semibold flex items-center justify-center mb-4" id="addMoreScanBtn">
+                <i class="fas fa-plus-circle mr-2"></i>
+                Pindai Barang Lain
+            </button>
+
+            <div id="scannedItemsList" class="space-y-3 mb-6 max-h-60 overflow-y-auto">
+                <!-- Daftar barang yang dipindai akan muncul di sini -->
+                <p class="text-gray-600 text-center" id="noItemsMessage">Belum ada barang yang dipindai.</p>
+            </div>
+
+            <button class="btn-success w-full py-3 rounded-lg font-semibold flex items-center justify-center" id="confirmAngkutBtn">
+                <i class="fas fa-check-circle mr-2"></i>
+                Konfirmasi Pengangkutan (<span id="scannedCount">0</span> Barang)
+            </button>
+            <button class="btn-primary w-full py-2 rounded-lg font-semibold mt-3" onclick="closeScanAngkutModal()">
+                Batal
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let scannedItems = []; // Array untuk menyimpan resi barang yang dipindai
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg text-white font-semibold ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Fungsi untuk memperbarui statistik
+        function updateStats() {
+            // Simulasi data statistik (dalam aplikasi nyata, ini akan diambil dari API)
+            document.getElementById('statPenerimaan').textContent = Math.floor(Math.random() * 50) + 10;
+            document.getElementById('statSortirPutra').textContent = Math.floor(Math.random() * 30) + 5;
+            document.getElementById('statSortirPutri').textContent = Math.floor(Math.random() * 30) + 5;
+            document.getElementById('statMenujuSortir').textContent = Math.floor(Math.random() * 20) + 2;
+            document.getElementById('statMenujuWilayah').textContent = Math.floor(Math.random() * 40) + 5;
+        }
+
+        // Fungsi untuk membuka modal Scan & Angkut
+        function openScanAngkutModal() {
+            document.getElementById('scanAngkutModal').classList.add('show');
+            updateScannedItemsList(); // Perbarui daftar saat modal dibuka
+        }
+
+        // Fungsi untuk menutup modal Scan & Angkut
+        function closeScanAngkutModal() {
+            document.getElementById('scanAngkutModal').classList.remove('show');
+            // Reset daftar barang yang dipindai saat modal ditutup
+            scannedItems = [];
+            updateScannedItemsList();
+        }
+
+        // Fungsi untuk menambahkan item yang dipindai ke daftar
+        function addScannedItem(resi) {
+            if (!scannedItems.includes(resi)) { // Pastikan tidak ada duplikat
+                scannedItems.push(resi);
+                showNotification(`Barang ${resi} berhasil dipindai!`, 'success');
+                updateScannedItemsList();
+            } else {
+                showNotification(`Barang ${resi} sudah ada di daftar.`, 'info');
+            }
+        }
+
+        // Fungsi untuk menghapus item dari daftar
+        function removeScannedItem(resiToRemove) {
+            scannedItems = scannedItems.filter(resi => resi !== resiToRemove);
+            showNotification(`Barang ${resiToRemove} dihapus dari daftar.`, 'info');
+            updateScannedItemsList();
+        }
+
+        // Fungsi untuk memperbarui tampilan daftar barang yang dipindai
+        function updateScannedItemsList() {
+            const listContainer = document.getElementById('scannedItemsList');
+            const scannedCountSpan = document.getElementById('scannedCount');
+            const noItemsMessage = document.getElementById('noItemsMessage');
+
+            listContainer.innerHTML = ''; // Bersihkan daftar yang ada
+
+            if (scannedItems.length === 0) {
+                noItemsMessage.style.display = 'block';
+                listContainer.appendChild(noItemsMessage);
+                document.getElementById('confirmAngkutBtn').disabled = true;
+            } else {
+                noItemsMessage.style.display = 'none';
+                scannedItems.forEach(resi => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'scanned-item';
+                    itemDiv.innerHTML = `
+                        <span>${resi}</span>
+                        <i class="fas fa-times-circle remove-btn" data-resi="${resi}"></i>
+                    `;
+                    listContainer.appendChild(itemDiv);
+                });
+                document.getElementById('confirmAngkutBtn').disabled = false;
+            }
+            scannedCountSpan.textContent = scannedItems.length;
+
+            // Tambahkan event listener untuk tombol hapus
+            listContainer.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    const resi = event.target.dataset.resi;
+                    removeScannedItem(resi);
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats(); // Perbarui statistik saat halaman dimuat
+
+            // Event listener untuk tombol "Mulai Scan Barang"
+            document.getElementById('startScanAngkutBtn').addEventListener('click', openScanAngkutModal);
+
+            // Event listener untuk tombol "Pindai Barang Lain" di modal
+            document.getElementById('addMoreScanBtn').addEventListener('click', function() {
+                // Simulasi scan QR Code baru
+                const newResi = `RESI${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`;
+                addScannedItem(newResi);
+            });
+
+            // Event listener untuk tombol "Konfirmasi Pengangkutan"
+            document.getElementById('confirmAngkutBtn').addEventListener('click', function() {
+                if (scannedItems.length > 0) {
+                    showNotification(`Berhasil mengkonfirmasi pengangkutan ${scannedItems.length} barang!`, 'success');
+                    console.log('Barang yang diangkut:', scannedItems);
+                    // Di sini Anda akan mengirim data scannedItems ke backend
+                    closeScanAngkutModal(); // Tutup modal setelah konfirmasi
+                    updateStats(); // Perbarui statistik setelah pengangkutan
+                } else {
+                    showNotification('Tidak ada barang untuk diangkut.', 'error');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
