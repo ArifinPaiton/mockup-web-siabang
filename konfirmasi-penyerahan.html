@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;极, 600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
         
         :root {
             --primary-blue: #3B82F6;
@@ -118,7 +118,7 @@
                     <p class="text-gray-700 text-sm mt-1">Ambil Foto</p>
                 </div>
                 <div class="flex-1 h-1 bg-gray-300 mx-2"></div>
-                <div class="flex-极 text-center">
+                <div class="flex-1 text-center">
                     <div class="w-8 h-8 mx-auto bg-gray-300 rounded-full flex items-center justify-center text-white font-bold">3</div>
                     <p class="text-gray-700 text-sm mt-1">Konfirmasi</p>
                 </div>
@@ -138,19 +138,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <p class="text-gray-600 font-medium">Nama Penerima</p>
-                    <p class="font-semibold text-gray-800">Ahmad Fauzi</p>
+                    <p class="font-semibold text-gray-800" id="receiverName">Memuat...</p>
                 </div>
                 <div>
                     <p class="text-gray-600 font-medium">No. Telepon</p>
-                    <p class="font-semibold text-gray-800">081277788899</p>
+                    <p class="font-semibold text-gray-800" id="receiverPhone">Memuat...</p>
                 </div>
                 <div>
                     <p class="text-gray-600 font-medium">Total Barang</p>
-                    <p class="font-semibold text-gray-800">2 Item</p>
+                    <p class="font-semibold text-gray-800" id="totalItems">2 Item</p> <!-- Ini bisa diupdate secara dinamis jika data total barang dikirim -->
                 </div>
                 <div>
                     <p class="text-gray-600 font-medium">Resi</p>
-                    <p class="font-semibold text-gray-800">RESI00123457</极>
+                    <p class="font-semibold text-gray-800" id="receiverResi">Memuat...</p>
                 </div>
             </div>
         </div>
@@ -189,7 +189,7 @@
                             <p class="text-sm text-gray-600">Kontrak Kerja</p>
                             <p class="text-sm text-gray-500">0.3 kg • Important</p>
                         </div>
-                        <i class="fas fa-check-circle text-green-500 text-xl opacity-0 transition-opacity"></极>
+                        <i class="fas fa-check-circle text-green-500 text-xl opacity-0 transition-opacity"></i>
                     </label>
                 </div>
             </div>
@@ -205,7 +205,7 @@
             </div>
             
             <button class="btn-primary w-full py-3 rounded-lg font-semibold flex items-center justify-center" id="takePhotoBtn">
-                <极 class="fas fa-camera mr-2"></i>
+                <i class="fas fa-camera mr-2"></i>
                 Ambil Foto Penerima dengan Barang
             </button>
             
@@ -273,10 +273,18 @@
             showNotification('Foto penerima dengan barang berhasil diambil!', 'success');
             
             // Update progress steps
-            document.querySelectorAll('.flex-1.text-center:nth-child(2) .bg-blue-500').forEach(el => {
-                el.classList.remove('bg-blue-500');
-                el.classList.add('bg-green-500');
-            });
+            // Mengubah warna lingkaran langkah 2 menjadi hijau
+            const step2Circle = document.querySelector('.flex-1:nth-child(3) .w-8.h-8'); // Pilih lingkaran langkah 2
+            if (step2Circle) {
+                step2Circle.classList.remove('bg-blue-500');
+                step2Circle.classList.add('bg-green-500');
+            }
+            // Mengubah warna garis antara langkah 1 dan 2 menjadi hijau
+            const line1to2 = document.querySelector('.flex-1.h-1.bg-gray-300:nth-of-type(2)');
+            if (line1to2) {
+                line1to2.classList.remove('bg-gray-300');
+                line1to2.classList.add('bg-green-500');
+            }
         }
 
         function confirmDelivery() {
@@ -295,10 +303,18 @@
             showNotification('Penyerahan barang berhasil dikonfirmasi!', 'success');
             
             // Update progress steps
-            document.querySelectorAll('.flex-1.text-center:nth-child(3) .bg-gray-300').forEach(el => {
-                el.classList.remove('bg-gray-300');
-                el.classList.add('bg-green-500');
-            });
+            // Mengubah warna lingkaran langkah 3 menjadi hijau
+            const step3Circle = document.querySelector('.flex-1:nth-child(5) .w-8.h-8'); // Pilih lingkaran langkah 3
+            if (step3Circle) {
+                step3Circle.classList.remove('bg-gray-300');
+                step3Circle.classList.add('bg-green-500');
+            }
+            // Mengubah warna garis antara langkah 2 dan 3 menjadi hijau
+            const line2to3 = document.querySelector('.flex-1.h-1.bg-gray-300:nth-of-type(4)');
+            if (line2to3) {
+                line2to3.classList.remove('bg-gray-300');
+                line2to3.classList.add('bg-green-500');
+            }
             
             // Disable button setelah konfirmasi
             document.getElementById('confirmBtn').disabled = true;
@@ -334,6 +350,30 @@
             
             // Confirm button
             document.getElementById('confirmBtn').addEventListener('click', confirmDelivery);
+
+            // Ambil data dari URL dan tampilkan
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name');
+            const phone = urlParams.get('phone');
+            const resi = urlParams.get('resi');
+
+            if (name) {
+                document.getElementById('receiverName').textContent = name;
+            }
+            if (phone) {
+                document.getElementById('receiverPhone').textContent = phone;
+            }
+            if (resi) {
+                document.getElementById('receiverResi').textContent = resi;
+            }
+            // Anda mungkin perlu logika tambahan untuk menghitung total barang berdasarkan resi
+            // atau mengambilnya dari database/API jika ini adalah aplikasi nyata.
+            // Untuk contoh ini, total barang akan tetap statis atau Anda bisa menambahkannya sebagai parameter lain.
+            // Misalnya, jika Anda juga mengirimkan 'totalItems' dari halaman sebelumnya:
+            // const totalItems = urlParams.get('totalItems');
+            // if (totalItems) {
+            //     document.getElementById('totalItems').textContent = totalItems + ' Item';
+            // }
         });
     </script>
 </body>
