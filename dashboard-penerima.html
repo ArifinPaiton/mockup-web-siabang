@@ -133,6 +133,48 @@
             color: var(--primary-blue);
         }
 
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal > div {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #6B7280;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        .modal-close-btn:hover {
+            color: #374151;
+        }
+
         @media (max-width: 768px) {
             .responsive-padding {
                 padding: 1rem;
@@ -225,9 +267,9 @@
     </div>
 
     <!-- Modal Terima Barang Baru -->
-    <div id="modalTerimaBarang" class="modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 max-w-lg w-full relative">
-            <button class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-2xl font-bold" id="closeModalBtn">&times;</button>
+    <div id="modalTerimaBarang" class="modal" aria-hidden="true" role="dialog" aria-modal="true" tabindex="-1">
+        <div>
+            <button class="modal-close-btn" id="closeModalBtn" aria-label="Tutup modal">&times;</button>
             <h3 class="text-xl font-bold mb-4 text-gray-800">Cari Santri untuk Terima Barang</h3>
             <input type="text" id="modalSearchInput" class="search-input mb-4" placeholder="Ketik nama atau nomor registrasi santri..." autocomplete="off" />
             <div id="modalSearchResults" class="search-results hidden"></div>
@@ -235,7 +277,7 @@
     </div>
 
     <script>
-        // Simulasi data santri dan barang
+        // Data simulasi santri dan barang
         const santriData = [
             { id: 1, name: 'Ahmad Fauzi', regNo: 'REG001', barangCount: 3, barang: [
                 { id: 'B001', status: 'Diterima' },
@@ -265,14 +307,13 @@
             telahSampai: 20
         };
 
-        // Elemen DOM dashboard utama
+        // DOM Elements
         const searchInput = document.getElementById('searchInput');
         const searchResults = document.getElementById('searchResults');
         const trackingContainer = document.getElementById('trackingContainer');
         const trackingSantriName = document.getElementById('trackingSantriName');
         const trackingItems = document.getElementById('trackingItems');
 
-        // Elemen DOM modal
         const btnTerimaBarangBaru = document.getElementById('btnTerimaBarangBaru');
         const modalTerimaBarang = document.getElementById('modalTerimaBarang');
         const modalSearchInput = document.getElementById('modalSearchInput');
@@ -290,7 +331,7 @@
             setTimeout(() => notif.remove(), 3000);
         }
 
-        // Fungsi filter santri berdasarkan input pencarian
+        // Filter santri berdasarkan query
         function filterSantri(query) {
             const q = query.trim().toLowerCase();
             if (!q) return [];
@@ -324,56 +365,6 @@
             searchResults.classList.remove('hidden');
         }
 
-        // Tampilkan tracking barang milik santri
-        function showTracking(santri) {
-            trackingSantriName.textContent = `${santri.name} (${santri.regNo})`;
-            trackingItems.innerHTML = '';
-            if (!santri.barang || santri.barang.length === 0) {
-                trackingItems.innerHTML = '<p class="text-gray-600">Santri ini tidak memiliki barang yang sedang dilacak.</p>';
-            } else {
-                santri.barang.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'tracking-item';
-                    div.innerHTML = `<strong>ID Barang:</strong> ${item.id} &mdash; <strong>Status:</strong> ${item.status}`;
-                    trackingItems.appendChild(div);
-                });
-            }
-            trackingContainer.classList.remove('hidden');
-        }
-
-        // Update statistik di dashboard
-        function updateStatistik() {
-            document.getElementById('statDiterimaHariIni').textContent = statistik.diterimaHariIni;
-            document.getElementById('statProsesSortir').textContent = statistik.prosesSortir;
-            document.getElementById('statSiapDiantar').textContent = statistik.siapDiantar;
-            document.getElementById('statTelahSampai').textContent = statistik.telahSampai;
-        }
-
-        // Event listener pencarian di dashboard utama
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value;
-            if (query.length < 2) {
-                searchResults.classList.add('hidden');
-                return;
-            }
-            const results = filterSantri(query);
-            renderSearchResults(results);
-        });
-
-        // Event listener tombol Terima Barang Baru
-        btnTerimaBarangBaru.addEventListener('click', () => {
-            modalTerimaBarang.classList.remove('hidden');
-            modalSearchInput.value = '';
-            modalSearchResults.innerHTML = '';
-            modalSearchResults.classList.add('hidden');
-            modalSearchInput.focus();
-        });
-
-        // Event listener close modal
-        closeModalBtn.addEventListener('click', () => {
-            modalTerimaBarang.classList.add('hidden');
-        });
-
         // Render hasil pencarian di modal
         function renderModalSearchResults(results) {
             if (results.length === 0) {
@@ -393,6 +384,25 @@
                     modalSearchResults.classList.add('hidden');
                     modalSearchInput.value = `${santri.name} (${santri.regNo})`;
                     showTracking(santri);
-                    modalTerimaBarang.classList.add('hidden');
+                    closeModal();
                 });
-               
+                modalSearchResults.appendChild(div);
+            });
+            modalSearchResults.classList.remove('hidden');
+        }
+
+        // Tampilkan tracking barang milik santri
+        function showTracking(santri) {
+            trackingSantriName.textContent = `${santri.name} (${santri.regNo})`;
+            trackingItems.innerHTML = '';
+            if (!santri.barang || santri.barang.length === 0) {
+                trackingItems.innerHTML = '<p class="text-gray-600">Santri ini tidak memiliki barang yang sedang dilacak.</p>';
+            } else {
+                santri.barang.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'tracking-item';
+                    div.innerHTML = `<strong>ID Barang:</strong> ${item.id} &mdash; <strong>Status:</strong> ${item.status}`;
+                    trackingItems.appendChild(div);
+                });
+            }
+            trackingContainer.classList.remove('hidden');
