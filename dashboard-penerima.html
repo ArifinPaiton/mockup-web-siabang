@@ -312,7 +312,7 @@
                 div.className = 'search-result-item';
                 div.innerHTML = `
                     <span>${santri.name} (${santri.regNo})</span>
-                    <span class="font-semibold text-primary-blue">${santri.barangCount} Barang</span>
+                    <span class="font-semibold text-blue-600">${santri.barangCount} Barang</span>
                 `;
                 div.addEventListener('click', () => {
                     searchResults.classList.add('hidden');
@@ -387,4 +387,12 @@
                 div.className = 'search-result-item';
                 div.innerHTML = `
                     <span>${santri.name} (${santri.regNo})</span>
-                    <span class="font-semibold text-primary-blue">${santri.barangCount} Barang
+                    <span class="font-semibold text-blue-600">${santri.barangCount} Barang</span>
+                `;
+                div.addEventListener('click', () => {
+                    modalSearchResults.classList.add('hidden');
+                    modalSearchInput.value = `${santri.name} (${santri.regNo})`;
+                    showTracking(santri);
+                    modalTerimaBarang.classList.add('hidden');
+                });
+               
