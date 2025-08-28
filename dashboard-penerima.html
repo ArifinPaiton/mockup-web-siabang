@@ -265,13 +265,14 @@
             telahSampai: 20
         };
 
-        // Elemen DOM
+        // Elemen DOM dashboard utama
         const searchInput = document.getElementById('searchInput');
         const searchResults = document.getElementById('searchResults');
         const trackingContainer = document.getElementById('trackingContainer');
         const trackingSantriName = document.getElementById('trackingSantriName');
         const trackingItems = document.getElementById('trackingItems');
 
+        // Elemen DOM modal
         const btnTerimaBarangBaru = document.getElementById('btnTerimaBarangBaru');
         const modalTerimaBarang = document.getElementById('modalTerimaBarang');
         const modalSearchInput = document.getElementById('modalSearchInput');
@@ -373,7 +374,7 @@
             modalTerimaBarang.classList.add('hidden');
         });
 
-        // Fungsi render hasil pencarian di modal
+        // Render hasil pencarian di modal
         function renderModalSearchResults(results) {
             if (results.length === 0) {
                 modalSearchResults.innerHTML = '<p class="p-3 text-gray-600">Tidak ada data santri ditemukan.</p>';
@@ -386,8 +387,4 @@
                 div.className = 'search-result-item';
                 div.innerHTML = `
                     <span>${santri.name} (${santri.regNo})</span>
-                    <span class="font-semibold text-primary-blue">${santri.barangCount} Barang</span>
-                `;
-                div.addEventListener('click', () => {
-                    modalSearchResults.classList.add('hidden');
-                    modalSearchInput.value = `${santri.name} (${santri.regNo
+                    <span class="font-semibold text-primary-blue">${santri.barangCount} Barang
