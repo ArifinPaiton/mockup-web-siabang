@@ -6,6 +6,8 @@
     <title>Dashboard Penerima Barang - Antar Barang</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <!-- Library QR Code Scanner -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -175,6 +177,12 @@
             color: #374151;
         }
 
+        #qr-reader {
+            width: 100%;
+            max-width: 400px;
+            margin-top: 1rem;
+        }
+
         @media (max-width: 768px) {
             .responsive-padding {
                 padding: 1rem;
@@ -264,6 +272,13 @@
                 <i class="fas fa-plus-circle mr-3"></i> Terima Barang Baru
             </button>
         </div>
+
+        <!-- Info Santri Terpilih -->
+        <div id="selectedSantriInfo" class="glass-effect rounded-2xl p-6 mb-6 hidden max-w-xl mx-auto">
+            <h3 class="text-lg font-semibold mb-2 text-gray-800">Santri Terpilih:</h3>
+            <p><strong>Nama:</strong> <span id="selectedSantriName"></span></p>
+            <p><strong>No. Registrasi:</strong> <span id="selectedSantriRegNo"></span></p>
+        </div>
     </div>
 
     <!-- Modal Terima Barang Baru -->
@@ -273,136 +288,114 @@
             <h3 class="text-xl font-bold mb-4 text-gray-800">Cari Santri untuk Terima Barang</h3>
             <input type="text" id="modalSearchInput" class="search-input mb-4" placeholder="Ketik nama atau nomor registrasi santri..." autocomplete="off" />
             <div id="modalSearchResults" class="search-results hidden"></div>
+
+            <button id="btnOpenScanner" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700">
+                <i class="fas fa-qrcode"></i><span>Scan QR Code</span>
+            </button>
+
+            <div id="qr-reader" style="display:none;"></div>
+            <p id="qr-result" class="mt-4 font-semibold text-green-700"></p>
         </div>
     </div>
 
-    <script>
-        // Data simulasi santri dan barang
-        const santriData = [
-            { id: 1, name: 'Ahmad Fauzi', regNo: 'REG001', barangCount: 3, barang: [
-                { id: 'B001', status: 'Diterima' },
-                { id: 'B002', status: 'Proses Sortir' },
-                { id: 'B003', status: 'Siap Diantar' }
-            ]},
-            { id: 2, name: 'Siti Aminah', regNo: 'REG002', barangCount: 2, barang: [
-                { id: 'B004', status: 'Telah Sampai' },
-                { id: 'B005', status: 'Siap Diantar' }
-            ]},
-            { id: 3, name: 'Budi Santoso', regNo: 'REG003', barangCount: 1, barang: [
-                { id: 'B006', status: 'Proses Sortir' }
-            ]},
-            { id: 4, name: 'Dewi Lestari', regNo: 'REG004', barangCount: 4, barang: [
-                { id: 'B007', status: 'Diterima' },
-                { id: 'B008', status: 'Diterima' },
-                { id: 'B009', status: 'Siap Diantar' },
-                { id: 'B010', status: 'Telah Sampai' }
-            ]}
-        ];
+<script>
+    // Data simulasi santri dan barang
+    const santriData = [
+        { id: 1, name: 'Ahmad Fauzi', regNo: 'REG001', barangCount: 3, barang: [
+            { id: 'B001', status: 'Diterima' },
+            { id: 'B002', status: 'Proses Sortir' },
+            { id: 'B003', status: 'Siap Diantar' }
+        ]},
+        { id: 2, name: 'Siti Aminah', regNo: 'REG002', barangCount: 2, barang: [
+            { id: 'B004', status: 'Telah Sampai' },
+            { id: 'B005', status: 'Siap Diantar' }
+        ]},
+        { id: 3, name: 'Budi Santoso', regNo: 'REG003', barangCount: 1, barang: [
+            { id: 'B006', status: 'Proses Sortir' }
+        ]},
+        { id: 4, name: 'Dewi Lestari', regNo: 'REG004', barangCount: 4, barang: [
+            { id: 'B007', status: 'Diterima' },
+            { id: 'B008', status: 'Diterima' },
+            { id: 'B009', status: 'Siap Diantar' },
+            { id: 'B010', status: 'Telah Sampai' }
+        ]}
+    ];
 
-        // Statistik simulasi
-        const statistik = {
-            diterimaHariIni: 15,
-            prosesSortir: 8,
-            siapDiantar: 12,
-            telahSampai: 20
-        };
+    // Statistik simulasi
+    const statistik = {
+        diterimaHariIni: 15,
+        prosesSortir: 8,
+        siapDiantar: 12,
+        telahSampai: 20
+    };
 
-        // DOM Elements
-        const searchInput = document.getElementById('searchInput');
-        const searchResults = document.getElementById('searchResults');
-        const trackingContainer = document.getElementById('trackingContainer');
-        const trackingSantriName = document.getElementById('trackingSantriName');
-        const trackingItems = document.getElementById('trackingItems');
+    // DOM Elements dashboard utama
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const trackingContainer = document.getElementById('trackingContainer');
+    const trackingSantriName = document.getElementById('trackingSantriName');
+    const trackingItems = document.getElementById('trackingItems');
 
-        const btnTerimaBarangBaru = document.getElementById('btnTerimaBarangBaru');
-        const modalTerimaBarang = document.getElementById('modalTerimaBarang');
-        const modalSearchInput = document.getElementById('modalSearchInput');
-        const modalSearchResults = document.getElementById('modalSearchResults');
-        const closeModalBtn = document.getElementById('closeModalBtn');
+    const btnTerimaBarangBaru = document.getElementById('btnTerimaBarangBaru');
+    const modalTerimaBarang = document.getElementById('modalTerimaBarang');
+    const modalSearchInput = document.getElementById('modalSearchInput');
+    const modalSearchResults = document.getElementById('modalSearchResults');
+    const closeModalBtn = document.getElementById('closeModalBtn');
 
-        // Fungsi menampilkan notifikasi sederhana
-        function showNotification(message, type = 'success') {
-            const notif = document.createElement('div');
-            notif.textContent = message;
-            notif.className = `fixed top-4 right-4 px-4 py-3 rounded shadow text-white font-semibold ${
-                type === 'success' ? 'bg-green-600' : 'bg-red-600'
-            }`;
-            document.body.appendChild(notif);
-            setTimeout(() => notif.remove(), 3000);
-        }
+    const btnOpenScanner = document.getElementById('btnOpenScanner');
+    const qrReaderDiv = document.getElementById('qr-reader');
+    const qrResult = document.getElementById('qr-result');
 
-        // Filter santri berdasarkan query
-        function filterSantri(query) {
-            const q = query.trim().toLowerCase();
-            if (!q) return [];
-            return santriData.filter(s =>
-                s.name.toLowerCase().includes(q) || s.regNo.toLowerCase().includes(q)
-            );
-        }
+    const selectedSantriInfo = document.getElementById('selectedSantriInfo');
+    const selectedSantriName = document.getElementById('selectedSantriName');
+    const selectedSantriRegNo = document.getElementById('selectedSantriRegNo');
 
-        // Render hasil pencarian di dashboard utama
-        function renderSearchResults(results) {
-            if (results.length === 0) {
-                searchResults.innerHTML = '<p class="p-3 text-gray-600">Tidak ada data santri ditemukan.</p>';
-                searchResults.classList.remove('hidden');
-                return;
-            }
-            searchResults.innerHTML = '';
-            results.forEach(santri => {
-                const div = document.createElement('div');
-                div.className = 'search-result-item';
-                div.innerHTML = `
-                    <span>${santri.name} (${santri.regNo})</span>
-                    <span class="font-semibold text-blue-600">${santri.barangCount} Barang</span>
-                `;
-                div.addEventListener('click', () => {
-                    searchResults.classList.add('hidden');
-                    searchInput.value = `${santri.name} (${santri.regNo})`;
-                    showTracking(santri);
-                });
-                searchResults.appendChild(div);
-            });
+    // QR scanner instance
+    let html5QrcodeScanner;
+
+    // Fungsi menampilkan notifikasi sederhana
+    function showNotification(message, type = 'success') {
+        const notif = document.createElement('div');
+        notif.textContent = message;
+        notif.className = `fixed top-4 right-4 px-4 py-3 rounded shadow text-white font-semibold ${
+            type === 'success' ? 'bg-green-600' : 'bg-red-600'
+        }`;
+        document.body.appendChild(notif);
+        setTimeout(() => notif.remove(), 3000);
+    }
+
+    // Filter santri berdasarkan query
+    function filterSantri(query) {
+        const q = query.trim().toLowerCase();
+        if (!q) return [];
+        return santriData.filter(s =>
+            s.name.toLowerCase().includes(q) || s.regNo.toLowerCase().includes(q)
+        );
+    }
+
+    // Render hasil pencarian di dashboard utama
+    function renderSearchResults(results) {
+        if (results.length === 0) {
+            searchResults.innerHTML = '<p class="p-3 text-gray-600">Tidak ada data santri ditemukan.</p>';
             searchResults.classList.remove('hidden');
+            return;
         }
-
-        // Render hasil pencarian di modal
-        function renderModalSearchResults(results) {
-            if (results.length === 0) {
-                modalSearchResults.innerHTML = '<p class="p-3 text-gray-600">Tidak ada data santri ditemukan.</p>';
-                modalSearchResults.classList.remove('hidden');
-                return;
-            }
-            modalSearchResults.innerHTML = '';
-            results.forEach(santri => {
-                const div = document.createElement('div');
-                div.className = 'search-result-item';
-                div.innerHTML = `
-                    <span>${santri.name} (${santri.regNo})</span>
-                    <span class="font-semibold text-blue-600">${santri.barangCount} Barang</span>
-                `;
-                div.addEventListener('click', () => {
-                    modalSearchResults.classList.add('hidden');
-                    modalSearchInput.value = `${santri.name} (${santri.regNo})`;
-                    showTracking(santri);
-                    closeModal();
-                });
-                modalSearchResults.appendChild(div);
+        searchResults.innerHTML = '';
+        results.forEach(santri => {
+            const div = document.createElement('div');
+            div.className = 'search-result-item';
+            div.innerHTML = `
+                <span>${santri.name} (${santri.regNo})</span>
+                <span class="font-semibold text-blue-600">${santri.barangCount} Barang</span>
+            `;
+            div.addEventListener('click', () => {
+                searchResults.classList.add('hidden');
+                searchInput.value = `${santri.name} (${santri.regNo})`;
+                showTracking(santri);
             });
-            modalSearchResults.classList.remove('hidden');
-        }
+            searchResults.appendChild(div);
+        });
+        searchResults.classList.remove('hidden');
+    }
 
-        // Tampilkan tracking barang milik santri
-        function showTracking(santri) {
-            trackingSantriName.textContent = `${santri.name} (${santri.regNo})`;
-            trackingItems.innerHTML = '';
-            if (!santri.barang || santri.barang.length === 0) {
-                trackingItems.innerHTML = '<p class="text-gray-600">Santri ini tidak memiliki barang yang sedang dilacak.</p>';
-            } else {
-                santri.barang.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'tracking-item';
-                    div.innerHTML = `<strong>ID Barang:</strong> ${item.id} &mdash; <strong>Status:</strong> ${item.status}`;
-                    trackingItems.appendChild(div);
-                });
-            }
-            trackingContainer.classList.remove('hidden');
+    // Render
