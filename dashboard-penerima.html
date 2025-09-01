@@ -1,401 +1,452 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dashboard Penerima Barang - Antar Barang</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-    <!-- Library QR Code Scanner -->
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard Penerima Barang - Antar Barang</title>
 
-        :root {
-            --primary-blue: #3B82F6;
-            --secondary-blue: #60A5FA;
-            --light-blue: #DBEAFE;
-            --dark-blue: #1E40AF;
-            --soft-gray: #F8FAFC;
-            --text-dark: #374151;
-            --text-light: #6B7280;
-        }
+  <!-- Tailwind & Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: linear-gradient(135deg, var(--light-blue) 0%, #FFFFFF 100%);
-            min-height: 100vh;
-            color: var(--text-dark);
-        }
+  <!-- Library QR Code Scanner -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
-        }
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            color: white;
-            transition: all 0.3s ease;
-        }
+  <style>
+    :root {
+      --primary-blue: #3B82F6;
+      --secondary-blue: #60A5FA;
+      --light-blue: #DBEAFE;
+      --dark-blue: #1E40AF;
+      --soft-gray: #F8FAFC;
+      --text-dark: #374151;
+      --text-light: #6B7280;
+    }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-        }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, var(--light-blue) 0%, #FFFFFF 100%);
+      min-height: 100vh;
+      color: var(--text-dark);
+    }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%);
-            color: white;
-            transition: all 0.3s ease;
-        }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    }
 
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
-        }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
 
-        .stat-card {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        }
+    .stat-card {
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
 
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
-        }
+    .search-input {
+      background: white;
+      border: 2px solid #E5E7EB;
+      transition: all 0.3s ease;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      width: 100%;
+    }
+    .search-input:focus {
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      outline: none;
+    }
 
-        .search-input {
-            background: white;
-            border: 2px solid #E5E7EB;
-            transition: all 0.3s ease;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            width: 100%;
-        }
+    .search-results {
+      background: white;
+      border: 1px solid #E5E7EB;
+      border-top: none;
+      max-height: 250px;
+      overflow-y: auto;
+      border-radius: 0 0 0.5rem 0.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: absolute;
+      width: 100%;
+      z-index: 50;
+    }
 
-        .search-input:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            outline: none;
-        }
+    .search-result-item {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      border-bottom: 1px solid #E5E7EB;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .search-result-item:last-child {
+      border-bottom: none;
+    }
+    .search-result-item:hover {
+      background-color: var(--light-blue);
+    }
 
-        .search-results {
-            background: white;
-            border: 1px solid #E5E7EB;
-            border-top: none;
-            max-height: 250px;
-            overflow-y: auto;
-            border-radius: 0 0 0.5rem 0.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: absolute;
-            width: 100%;
-            z-index: 50;
-        }
+    .tracking-list {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 1rem;
+      border: 1px solid #E5E7EB;
+      border-radius: 0.5rem;
+      background: white;
+      padding: 1rem;
+    }
 
-        .search-result-item {
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #E5E7EB;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .tracking-item {
+      border-bottom: 1px solid #E5E7EB;
+      padding: 0.5rem 0;
+    }
+    .tracking-item:last-child {
+      border-bottom: none;
+    }
+    .tracking-item strong {
+      color: var(--primary-blue);
+    }
 
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal > div {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem 2rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #6B7280;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+    .modal-close-btn:hover {
+      color: #374151;
+    }
 
-        .search-result-item:hover {
-            background-color: var(--light-blue);
-        }
-
-        .tracking-list {
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 1rem;
-            border: 1px solid #E5E7EB;
-            border-radius: 0.5rem;
-            background: white;
-            padding: 1rem;
-        }
-
-        .tracking-item {
-            border-bottom: 1px solid #E5E7EB;
-            padding: 0.5rem 0;
-        }
-
-        .tracking-item:last-child {
-            border-bottom: none;
-        }
-
-        .tracking-item strong {
-            color: var(--primary-blue);
-        }
-
-        /* Modal styles */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        .modal.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .modal > div {
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem 2rem;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        .modal-close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #6B7280;
-            cursor: pointer;
-            border: none;
-            background: none;
-        }
-        .modal-close-btn:hover {
-            color: #374151;
-        }
-
-        #qr-reader {
-            width: 100%;
-            max-width: 400px;
-            margin-top: 1rem;
-        }
-
-        @media (max-width: 768px) {
-            .responsive-padding {
-                padding: 1rem;
-            }
-            .text-responsive {
-                font-size: 0.9rem;
-            }
-            .stat-card {
-                padding: 1.5rem;
-            }
-        }
-    </style>
+    #qr-reader {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-5xl mx-auto responsive-padding">
-        <!-- Header -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 flex flex-col md:flex-row justify-between items-center">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-800">Dashboard Penerima Barang</h1>
-                <p class="text-gray-600 mt-1">Sistem Manajemen Penerimaan Barang</p>
-            </div>
-            <div class="mt-4 md:mt-0 flex items-center space-x-3">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <i class="fas fa-user-check text-xl text-blue-600"></i>
-                </div>
-                <div>
-                    <p class="text-gray-800 font-semibold">Siti Aminah</p>
-                    <p class="text-gray-600 text-sm">Petugas Penerima</p>
-                </div>
-            </div>
+  <div class="w-full max-w-5xl mx-auto">
+    <!-- Header -->
+    <header class="glass-effect rounded-2xl p-6 mb-6 flex flex-col md:flex-row justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Dashboard Penerima Barang</h1>
+        <p class="text-gray-600 mt-1">Sistem Manajemen Penerimaan Barang</p>
+      </div>
+      <div class="mt-4 md:mt-0 flex items-center space-x-3">
+        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center" aria-label="Ikon petugas">
+          <i class="fas fa-user-check text-xl text-blue-600"></i>
         </div>
-
-        <!-- Kolom Pencarian Barang -->
-        <div class="glass-effect rounded-2xl p-6 mb-6 relative">
-            <label for="searchInput" class="block text-gray-700 font-semibold mb-2">Cari Barang (Nama atau No. Registrasi Santri)</label>
-            <input type="text" id="searchInput" class="search-input" placeholder="Ketik nama atau nomor registrasi santri..." autocomplete="off" />
-            <div id="searchResults" class="search-results hidden"></div>
-
-            <!-- Tracking Barang Santri -->
-            <div id="trackingContainer" class="tracking-list hidden mt-6">
-                <h3 class="font-semibold text-gray-800 mb-3">Tracking Barang Santri: <span id="trackingSantriName"></span></h3>
-                <div id="trackingItems"></div>
-            </div>
-        </div>
-
-        <!-- Statistik -->
-        <div class="glass-effect rounded-2xl p-6 mb-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Statistik Barang</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="stat-card card-gradient-1 rounded-2xl p-6 text-center">
-                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-box-open text-xl text-blue-600"></i>
-                    </div>
-                    <h3 class="font-semibold text-gray-800 text-lg mb-1">Barang Diterima Hari Ini</h3>
-                    <p class="text-3xl font-bold text-gray-800" id="statDiterimaHariIni">0</p>
-                </div>
-
-                <div class="stat-card card-gradient-2 rounded-2xl p-6 text-center">
-                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-spinner text-xl text-amber-600"></i>
-                    </div>
-                    <h3 class="font-semibold text-gray-800 text-lg mb-1">Barang Proses Sortir</h3>
-                    <p class="text-3xl font-bold text-gray-800" id="statProsesSortir">0</p>
-                </div>
-
-                <div class="stat-card card-gradient-3 rounded-2xl p-6 text-center">
-                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-truck text-xl text-green-600"></i>
-                    </div>
-                    <h3 class="font-semibold text-gray-800 text-lg mb-1">Barang Siap Diantar</h3>
-                    <p class="text-3xl font-bold text-gray-800" id="statSiapDiantar">0</p>
-                </div>
-
-                <div class="stat-card card-gradient-4 rounded-2xl p-6 text-center">
-                    <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
-                        <i class="fas fa-check-circle text-xl text-purple-600"></i>
-                    </div>
-                    <h3 class="font-semibold text-gray-800 text-lg mb-1">Barang Telah Sampai</h3>
-                    <p class="text-3xl font-bold text-gray-800" id="statTelahSampai">0</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tombol Terima Barang Baru -->
-        <div class="glass-effect rounded-2xl p-6 text-center">
-            <button id="btnTerimaBarangBaru" class="btn-primary px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center mx-auto">
-                <i class="fas fa-plus-circle mr-3"></i> Terima Barang Baru
-            </button>
-        </div>
-
-        <!-- Info Santri Terpilih -->
-        <div id="selectedSantriInfo" class="glass-effect rounded-2xl p-6 mb-6 hidden max-w-xl mx-auto">
-            <h3 class="text-lg font-semibold mb-2 text-gray-800">Santri Terpilih:</h3>
-            <p><strong>Nama:</strong> <span id="selectedSantriName"></span></p>
-            <p><strong>No. Registrasi:</strong> <span id="selectedSantriRegNo"></span></p>
-        </div>
-    </div>
-
-    <!-- Modal Terima Barang Baru -->
-    <div id="modalTerimaBarang" class="modal" aria-hidden="true" role="dialog" aria-modal="true" tabindex="-1">
         <div>
-            <button class="modal-close-btn" id="closeModalBtn" aria-label="Tutup modal">&times;</button>
-            <h3 class="text-xl font-bold mb-4 text-gray-800">Cari Santri untuk Terima Barang</h3>
-            <input type="text" id="modalSearchInput" class="search-input mb-4" placeholder="Ketik nama atau nomor registrasi santri..." autocomplete="off" />
-            <div id="modalSearchResults" class="search-results hidden"></div>
-
-            <button id="btnOpenScanner" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700">
-                <i class="fas fa-qrcode"></i><span>Scan QR Code</span>
-            </button>
-
-            <div id="qr-reader" style="display:none;"></div>
-            <p id="qr-result" class="mt-4 font-semibold text-green-700"></p>
+          <p class="text-gray-800 font-semibold">Siti Aminah</p>
+          <p class="text-gray-600 text-sm">Petugas Penerima</p>
         </div>
+      </div>
+    </header>
+
+    <!-- Pencarian Barang -->
+    <section class="glass-effect rounded-2xl p-6 mb-6 relative">
+      <label for="searchInput" class="block text-gray-700 font-semibold mb-2">Cari Barang (Nama atau No. Registrasi Santri)</label>
+      <input type="text" id="searchInput" class="search-input" placeholder="Ketik nama atau nomor registrasi santri..." autocomplete="off" />
+      <div id="searchResults" class="search-results hidden"></div>
+
+      <div id="trackingContainer" class="tracking-list hidden mt-6">
+        <h3 class="font-semibold text-gray-800 mb-3">Tracking Barang Santri: <span id="trackingSantriName"></span></h3>
+        <div id="trackingItems"></div>
+      </div>
+    </section>
+
+    <!-- Statistik -->
+    <section class="glass-effect rounded-2xl p-6 mb-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Statistik Barang</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="stat-card rounded-2xl p-6 text-center">
+          <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-box-open text-xl text-blue-600"></i>
+          </div>
+          <h3 class="font-semibold text-gray-800 text-lg mb-1">Barang Diterima Hari Ini</h3>
+          <p class="text-3xl font-bold text-gray-800" id="statDiterimaHariIni">0</p>
+        </div>
+        <div class="stat-card rounded-2xl p-6 text-center">
+          <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-spinner text-xl text-amber-600"></i>
+          </div>
+          <h3 class="font-semibold text-gray-800 text-lg mb-1">Barang Proses Sortir</h3>
+          <p class="text-3xl font-bold text-gray-800" id="statProsesSortir">0</p>
+        </div>
+        <div class="stat-card rounded-2xl p-6 text-center">
+          <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-truck text-xl text-green-600"></i>
+          </div>
+          <h3 class="font-semibold text-gray-800 text-lg mb-1">Barang Siap Diantar</h3>
+          <p class="text-3xl font-bold text-gray-800" id="statSiapDiantar">0</p>
+        </div>
+        <div class="stat-card rounded-2xl p-6 text-center">
+          <div class="w-12 h-12 mx-auto bg-white bg-opacity-50 rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-check-circle text-xl text-purple-600"></i>
+          </div>
+          <h3 class="font-semibold text-gray-800 text-lg mb-1">Barang Telah Sampai</h3>
+          <p class="text-3xl font-bold text-gray-800" id="statTelahSampai">0</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tombol Terima Barang Baru -->
+    <div class="glass-effect rounded-2xl p-6 text-center">
+      <button id="btnTerimaBarangBaru" class="btn-primary px-8 py-4 rounded-lg font-semibold text-lg flex items-center justify-center mx-auto">
+        <i class="fas fa-plus-circle mr-3"></i> Terima Barang Baru
+      </button>
     </div>
+
+    <!-- Info Santri Terpilih -->
+    <div id="selectedSantriInfo" class="glass-effect rounded-2xl p-6 mb-6 hidden max-w-xl mx-auto">
+      <h3 class="text-lg font-semibold mb-2 text-gray-800">Santri Terpilih:</h3>
+      <p><strong>Nama:</strong> <span id="selectedSantriName"></span></p>
+      <p><strong>No. Registrasi:</strong> <span id="selectedSantriRegNo"></span></p>
+    </div>
+  </div>
+
+  <!-- Modal Terima Barang Baru -->
+  <div id="modalTerimaBarang" class="modal" aria-hidden="true" role="dialog" aria-modal="true" tabindex="-1">
+    <div>
+      <button class="modal-close-btn" id="closeModalBtn" aria-label="Tutup modal">&times;</button>
+      <h3 class="text-xl font-bold mb-4 text-gray-800">Cari Santri untuk Terima Barang</h3>
+      <input type="text" id="modalSearchInput" class="search-input mb-4" placeholder="Ketik nama atau nomor registrasi santri..." autocomplete="off" />
+      <div id="modalSearchResults" class="search-results hidden"></div>
+
+      <button id="btnOpenScanner" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700">
+        <i class="fas fa-qrcode"></i><span>Scan QR Code</span>
+      </button>
+
+      <div id="qr-reader" style="display:none;"></div>
+      <p id="qr-result" class="mt-4 font-semibold text-green-700"></p>
+    </div>
+  </div>
 
 <script>
-    // Data simulasi santri dan barang
-    const santriData = [
-        { id: 1, name: 'Ahmad Fauzi', regNo: 'REG001', barangCount: 3, barang: [
-            { id: 'B001', status: 'Diterima' },
-            { id: 'B002', status: 'Proses Sortir' },
-            { id: 'B003', status: 'Siap Diantar' }
-        ]},
-        { id: 2, name: 'Siti Aminah', regNo: 'REG002', barangCount: 2, barang: [
-            { id: 'B004', status: 'Telah Sampai' },
-            { id: 'B005', status: 'Siap Diantar' }
-        ]},
-        { id: 3, name: 'Budi Santoso', regNo: 'REG003', barangCount: 1, barang: [
-            { id: 'B006', status: 'Proses Sortir' }
-        ]},
-        { id: 4, name: 'Dewi Lestari', regNo: 'REG004', barangCount: 4, barang: [
-            { id: 'B007', status: 'Diterima' },
-            { id: 'B008', status: 'Diterima' },
-            { id: 'B009', status: 'Siap Diantar' },
-            { id: 'B010', status: 'Telah Sampai' }
-        ]}
-    ];
+  // Data simulasi santri
+  const santriData = [
+    { id: 1, name: 'Ahmad Fauzi', regNo: 'REG001', barangCount: 3, barang: [
+      { id: 'B001', status: 'Diterima' },
+      { id: 'B002', status: 'Proses Sortir' },
+      { id: 'B003', status: 'Siap Diantar' }
+    ]},
+    { id: 2, name: 'Siti Aminah', regNo: 'REG002', barangCount: 2, barang: [
+      { id: 'B004', status: 'Telah Sampai' },
+      { id: 'B005', status: 'Siap Diantar' }
+    ]},
+    { id: 3, name: 'Budi Santoso', regNo: 'REG003', barangCount: 1, barang: [
+      { id: 'B006', status: 'Proses Sortir' }
+    ]},
+    { id: 4, name: 'Dewi Lestari', regNo: 'REG004', barangCount: 4, barang: [
+      { id: 'B007', status: 'Diterima' },
+      { id: 'B008', status: 'Diterima' },
+      { id: 'B009', status: 'Siap Diantar' },
+      { id: 'B010', status: 'Telah Sampai' }
+    ]}
+  ];
 
-    // Statistik simulasi
-    const statistik = {
-        diterimaHariIni: 15,
-        prosesSortir: 8,
-        siapDiantar: 12,
-        telahSampai: 20
-    };
+  // Statistik simulasi
+  const statistik = {
+    diterimaHariIni: 15,
+    prosesSortir: 8,
+    siapDiantar: 12,
+    telahSampai: 20
+  };
 
-    // DOM Elements dashboard utama
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
-    const trackingContainer = document.getElementById('trackingContainer');
-    const trackingSantriName = document.getElementById('trackingSantriName');
-    const trackingItems = document.getElementById('trackingItems');
+  // DOM Elements
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+  const trackingContainer = document.getElementById('trackingContainer');
+  const trackingSantriName = document.getElementById('trackingSantriName');
+  const trackingItems = document.getElementById('trackingItems');
 
-    const btnTerimaBarangBaru = document.getElementById('btnTerimaBarangBaru');
-    const modalTerimaBarang = document.getElementById('modalTerimaBarang');
-    const modalSearchInput = document.getElementById('modalSearchInput');
-    const modalSearchResults = document.getElementById('modalSearchResults');
-    const closeModalBtn = document.getElementById('closeModalBtn');
+  const btnTerimaBarangBaru = document.getElementById('btnTerimaBarangBaru');
+  const modalTerimaBarang = document.getElementById('modalTerimaBarang');
+  const modalSearchInput = document.getElementById('modalSearchInput');
+  const modalSearchResults = document.getElementById('modalSearchResults');
+  const closeModalBtn = document.getElementById('closeModalBtn');
 
-    const btnOpenScanner = document.getElementById('btnOpenScanner');
-    const qrReaderDiv = document.getElementById('qr-reader');
-    const qrResult = document.getElementById('qr-result');
+  const btnOpenScanner = document.getElementById('btnOpenScanner');
+  const qrReaderDiv = document.getElementById('qr-reader');
+  const qrResult = document.getElementById('qr-result');
 
-    const selectedSantriInfo = document.getElementById('selectedSantriInfo');
-    const selectedSantriName = document.getElementById('selectedSantriName');
-    const selectedSantriRegNo = document.getElementById('selectedSantriRegNo');
+  const selectedSantriInfo = document.getElementById('selectedSantriInfo');
+  const selectedSantriName = document.getElementById('selectedSantriName');
+  const selectedSantriRegNo = document.getElementById('selectedSantriRegNo');
 
-    // QR scanner instance
-    let html5QrcodeScanner;
+  let html5QrcodeScanner;
 
-    // Fungsi menampilkan notifikasi sederhana
-    function showNotification(message, type = 'success') {
-        const notif = document.createElement('div');
-        notif.textContent = message;
-        notif.className = `fixed top-4 right-4 px-4 py-3 rounded shadow text-white font-semibold ${
-            type === 'success' ? 'bg-green-600' : 'bg-red-600'
-        }`;
-        document.body.appendChild(notif);
-        setTimeout(() => notif.remove(), 3000);
+  function showNotification(message, type = 'success') {
+    const notif = document.createElement('div');
+    notif.textContent = message;
+    notif.className = `fixed top-4 right-4 px-4 py-3 rounded shadow text-white font-semibold ${
+      type === 'success' ? 'bg-green-600' : 'bg-red-600'
+    }`;
+    document.body.appendChild(notif);
+    setTimeout(() => notif.remove(), 3000);
+  }
+
+  function filterSantri(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return santriData.filter(s =>
+      s.name.toLowerCase().includes(q) || s.regNo.toLowerCase().includes(q)
+    );
+  }
+
+  function renderSearchResults(results) {
+    if (results.length === 0) {
+      searchResults.innerHTML = '<p class="p-3 text-gray-600">Tidak ada data santri ditemukan.</p>';
+      searchResults.classList.remove('hidden');
+      return;
     }
+    searchResults.innerHTML = '';
+    results.forEach(santri => {
+      const div = document.createElement('div');
+      div.className = 'search-result-item';
+      div.innerHTML = `
+        <span>${santri.name} (${santri.regNo})</span>
+        <span class="font-semibold text-blue-600">${santri.barangCount} Barang</span>
+      `;
+      div.addEventListener('click', () => {
+        searchResults.classList.add('hidden');
+        searchInput.value = `${santri.name} (${santri.regNo})`;
+        showTracking(santri);
+      });
+      searchResults.appendChild(div);
+    });
+    searchResults.classList.remove('hidden');
+  }
 
-    // Filter santri berdasarkan query
-    function filterSantri(query) {
-        const q = query.trim().toLowerCase();
-        if (!q) return [];
-        return santriData.filter(s =>
-            s.name.toLowerCase().includes(q) || s.regNo.toLowerCase().includes(q)
-        );
+  function renderModalSearchResults(results) {
+    if (results.length === 0) {
+      modalSearchResults.innerHTML = '<p class="p-3 text-gray-600">Tidak ada data santri ditemukan.</p>';
+      modalSearchResults.classList.remove('hidden');
+      return;
     }
+    modalSearchResults.innerHTML = '';
+    results.forEach(santri => {
+      const div = document.createElement('div');
+      div.className = 'search-result-item';
+      div.innerHTML = `
+        <span>${santri.name} (${santri.regNo})</span>
+        <span class="font-semibold text-blue-600">${santri.barangCount} Barang</span>
+      `;
+      div.addEventListener('click', () => {
+        modalSearchResults.classList.add('hidden');
+        modalSearchInput.value = `${santri.name} (${santri.regNo})`;
+        selectedSantriInfo.classList.remove('hidden');
+        selectedSantriName.textContent = santri.name;
+        selectedSantriRegNo.textContent = santri.regNo;
+        showNotification("Santri dipilih untuk penerimaan barang.", "success");
+      });
+      modalSearchResults.appendChild(div);
+    });
+    modalSearchResults.classList.remove('hidden');
+  }
 
-    // Render hasil pencarian di dashboard utama
-    function renderSearchResults(results) {
-        if (results.length === 0) {
-            searchResults.innerHTML = '<p class="p-3 text-gray-600">Tidak ada data santri ditemukan.</p>';
-            searchResults.classList.remove('hidden');
-            return;
-        }
-        searchResults.innerHTML = '';
-        results.forEach(santri => {
-            const div = document.createElement('div');
-            div.className = 'search-result-item';
-            div.innerHTML = `
-                <span>${santri.name} (${santri.regNo})</span>
-                <span class="font-semibold text-blue-600">${santri.barangCount} Barang</span>
-            `;
-            div.addEventListener('click', () => {
-                searchResults.classList.add('hidden');
-                searchInput.value = `${santri.name} (${santri.regNo})`;
-                showTracking(santri);
-            });
-            searchResults.appendChild(div);
-        });
-        searchResults.classList.remove('hidden');
+  function showTracking(santri) {
+    trackingSantriName.textContent = santri.name;
+    trackingItems.innerHTML = '';
+    santri.barang.forEach(b => {
+      const item = document.createElement('div');
+      item.className = 'tracking-item';
+      item.innerHTML = `<p><strong>${b.id}</strong> - ${b.status}</p>`;
+      trackingItems.appendChild(item);
+    });
+    trackingContainer.classList.remove('hidden');
+  }
+
+  // Event listeners
+  searchInput.addEventListener('input', e => {
+    const results = filterSantri(e.target.value);
+    renderSearchResults(results);
+  });
+
+  modalSearchInput.addEventListener('input', e => {
+    const results = filterSantri(e.target.value);
+    renderModalSearchResults(results);
+  });
+
+  btnTerimaBarangBaru.addEventListener('click', () => {
+    modalTerimaBarang.classList.add('show');
+    modalSearchInput.focus();
+  });
+
+  closeModalBtn.addEventListener('click', () => {
+    modalTerimaBarang.classList.remove('show');
+  });
+
+  btnOpenScanner.addEventListener('click', () => {
+    qrReaderDiv.style.display = "block";
+    if (!html5QrcodeScanner) {
+      html5QrcodeScanner = new Html5Qrcode("qr-reader");
+      html5QrcodeScanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        qrCodeMessage => {
+          qrResult.textContent = `QR Code: ${qrCodeMessage}`;
+          showNotification("QR Code berhasil dipindai.", "success");
+          html5QrcodeScanner.stop();
+          qrReaderDiv.style.display = "none";
+        },
+        error => {}
+      );
     }
+  });
 
-    // Render
+  // Render statistik
+  document.getElementById('statDiterimaHariIni').textContent = statistik.diterimaHariIni;
+  document.getElementById('statProsesSortir').textContent = statistik.prosesSortir;
+  document.getElementById('statSiapDiantar').textContent = statistik.siapDiantar;
+  document.getElementById('statTelahSampai').textContent = statistik.telahSampai;
+</script>
+</body>
+</html>
